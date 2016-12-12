@@ -23,7 +23,7 @@ var password = process.env.FTP_PWD;
 var host = 'baptistevillain.fr';  
 var port = 21;  
 var localFilesGlob = ['./dist/**'];
-var remoteFolder = 'baptistevillain.fr/project/intensive'
+var remoteFolder = 'baptistevillain.fr/project/clicker'
 
 gulp.task('connect', function() {
   connect.server({
@@ -52,6 +52,7 @@ gulp.task('sass', function () {
 gulp.task('javascript', function() {
   return gulp.src(config.src + 'js/*.js')
     .pipe(plumber({errorHandler: notify.onError("JS Error: <%= error.message %>")}))
+    .pipe(sourcemaps.init())
     .pipe(minify({
     ext:{
       src:'.js',
@@ -60,6 +61,7 @@ gulp.task('javascript', function() {
     ignoreFiles: ['.min.js'],
     noSource: true
   }))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.dist + 'js'))
     .pipe(connect.reload())
 })
