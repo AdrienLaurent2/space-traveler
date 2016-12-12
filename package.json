@@ -1,8 +1,8 @@
 {
-  "name": "Front-end dev",
+  "name": "",
   "version": "1.0.0",
   "description": "Perfect frond-end starter pack",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
