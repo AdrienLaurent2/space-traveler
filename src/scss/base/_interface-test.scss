@@ -30,7 +30,7 @@
 .autoclickers-info{
   display: inline-block;
   vertical-align: top;
-  
+
   .info{
     display: block;
     width: 50px;
@@ -91,4 +91,38 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+
+.targets{
+  position: fixed;
+  display: flex;
+  bottom: 0;
+  left: 0;
+  width: 10vw;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  .target{
+    width: 50px;
+    height: 50px;
+    margin: 10px 0px;
+    &.iron-target{
+      background: grey;
+    }
+    &.carbon-target{
+      background: #1D1D1D;
+    }
+    &.silicon-target{
+      background: tomato;
+    }
+  }
+}
+
+.indication{
+  position: absolute;
+  width: 100px;
+  height: 100px;
 }
