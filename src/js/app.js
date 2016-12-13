@@ -258,21 +258,26 @@ function txtParticleAdd(type){
   txtParticles.items[index] = {};
   if(type == 'iron'){
     txtParticles.items[index].x = interface.target.iron_pos.left-20;
-    txtParticles.items[index].y = interface.target.iron_pos.top + interface.target.iron_pos.width/2;
+    txtParticles.items[index].y = interface.target.iron_pos.top + interface.target.iron_pos.height/2;
   }
   else if(type == 'carbon'){
     txtParticles.items[index].x = interface.target.carbon_pos.left-20;
-    txtParticles.items[index].y = interface.target.carbon_pos.top + interface.target.carbon_pos.width/2;
+    txtParticles.items[index].y = interface.target.carbon_pos.top + interface.target.carbon_pos.height/2;
   }
   else if(type == 'silicon'){
     txtParticles.items[index].x = interface.target.silicon_pos.left-20;
-    txtParticles.items[index].y = interface.target.silicon_pos.top + interface.target.silicon_pos.width/2;
+    txtParticles.items[index].y = interface.target.silicon_pos.top + interface.target.silicon_pos.height/2;
   }
+  //console.log(window.innerHeight)
+
   txtParticles.items[index].vx = -1;
   txtParticles.items[index].vy = -1;
 
+  console.log(txtParticles.items[index].y);
+
   txtParticles.items[index].opacity = 1;
   txtParticles.settings.index++;
+  
 }
 
 function txtParticleUpdate(){
@@ -283,7 +288,7 @@ function txtParticleUpdate(){
     txtParticles.items[i].vx *= 0.9;
     txtParticles.items[i].vy *= 1.1;
 
-    txtParticles.items[i].opacity -= 0.025;
+    txtParticles.items[i].opacity -= 0.03;
 
     if(txtParticles.items[i].opacity < 0){
       txtParticles.items.splice(i,1);
@@ -299,6 +304,7 @@ function txtParticlesDraw(i){
   var txt = document.createElement('p');
   txt.style.transform = 'translate('+ txtParticles.items[i].x+'px,'+ txtParticles.items[i].y+'px)';
   txt.style.width ='10px';
+  txt.style.height ='0';
   txt.style.opacity =  txtParticles.items[i].opacity;
   txt.innerHTML = "+" + clicker.click_increment_value;
   document.querySelector('.particles-container .indication').appendChild(txt);
