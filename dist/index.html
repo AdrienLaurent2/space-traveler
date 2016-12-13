@@ -1,47 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Space adventure</title>
-    <!-- Links -->
-    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
-    <!--[if lt IE 9]>
-<script src="assets/js/vendor/html5shiv.min.js"></script>
-<![endif]-->
-  </head>
-  <body>
-    <div class="cursors">
-      <div class="indication"></div>
-    </div>
-    <div class="txtcursors"></div>
-    <div class="info">
-      <div class="ore iron">0</div>
-      <div class="ore carbon">0</div>
-      <div class="ore silicon">0</div>
-      <div class="power">0</div>
-      <div class="click-number">0</div>
-    </div>
-    <div class="autoclickers-info">
-      <div class="info info-iron">0</div>
-      <div class="info info-carbon">0</div>
-      <div class="info info-silicon">0</div>
-      <div class="info info-power">0</div>
-    </div>
-    <div class="autoclickers">
-      <a href="#" class="autoclicker autoclicker-iron"><i class="fa fa-plus" aria-hidden="true"></i></a>
-      <a href="#" class="autoclicker autoclicker-carbon"><i class="fa fa-plus" aria-hidden="true"></i></a>
-      <a href="#" class="autoclicker autoclicker-silicon"><i class="fa fa-plus" aria-hidden="true"></i></a>
-      <a href="#" class="autoclicker autoclicker-power"><i class="fa fa-plus" aria-hidden="true"></i></a>
-
-      <div class="targets">
-        <div class="target iron-target"></div>
-        <div class="target carbon-target"></div>
-        <div class="target silicon-target"></div>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <title>Space Traveler</title>
+  <link rel="stylesheet" href="assets/css/app.min.css">
+</head>
+<body>
+  <div class="sky">
+    <img src="assets/img/stars.svg" alt="" class="sky--star">
+  </div>
+  <div class="menu">
+    <div class="menu--item">
+      <img src="assets/img/generator.svg" alt="" class="menu--item--img">
+      <div class="menu--item--title">Générateur</div>
+      <div class="menu--item--resources">
+        <div class="menu--item--resources--fer">
+          <img src="assets/img/fer.svg" alt="" class="menu--item--resources--fer--img">
+          <span class="menu--item--resources--fer--price">1k</span>
+        </div>
+        <div class="menu--item--resources--silicium">
+          <img src="assets/img/silicium.svg" alt="" class="menu--item--resources--silicium--img">
+          <span class="menu--item--resources--silicium--price">1k</span>
+        </div>
+        <div class="menu--item--resources--carbon">
+          <img src="assets/img/carbon.svg" alt="" class="menu--item--resources--carbon--img">
+          <span class="menu--item--resources--carbon--price">1k</span>
+        </div>
       </div>
     </div>
-    <script src="assets/js/app.min.js"></script>
-    <script src="https://use.fontawesome.com/039af97348.js"></script>
-  </body>
+    <div class="menu--item">
+      <img src="assets/img/post_comb.svg" alt="" class="menu--item--img">
+      <div class="menu--item--title">Post-combustion</div>
+      <div class="menu--item--resources">
+        <div class="menu--item--resources--fer">
+          <img src="assets/img/fer.svg" alt="" class="menu--item--resources--fer--img">
+          <span class="menu--item--resources--fer--price">100</span>
+        </div>
+        <div class="menu--item--resources--silicium">
+          <img src="assets/img/silicium.svg" alt="" class="menu--item--resources--silicium--img">
+          <span class="menu--item--resources--silicium--price">100</span>
+        </div>
+        <div class="menu--item--resources--carbon">
+          <img src="assets/img/carbon.svg" alt="" class="menu--item--resources--carbon--img">
+          <span class="menu--item--resources--carbon--price">100</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu--item">
+      <img src="assets/img/reactor_anti.svg" alt="" class="menu--item--img">
+      <div class="menu--item--title">Réacteur à anti-matières</div>
+      <div class="menu--item--resources">
+        <div class="menu--item--resources--fer">
+          <img src="assets/img/fer.svg" alt="" class="menu--item--resources--fer--img">
+          <span class="menu--item--resources--fer--price">100</span>
+        </div>
+        <div class="menu--item--resources--silicium">
+          <img src="assets/img/silicium.svg" alt="" class="menu--item--resources--silicium--img">
+          <span class="menu--item--resources--silicium--price">100</span>
+        </div>
+        <div class="menu--item--resources--carbon">
+          <img src="assets/img/carbon.svg" alt="" class="menu--item--resources--carbon--img">
+          <span class="menu--item--resources--carbon--price">100</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu--item">
+      <img src="assets/img/battery.svg" alt="" class="menu--item--img">
+      <div class="menu--item--title">Batterie supplémentaire</div>
+      <div class="menu--item--resources">
+        <div class="menu--item--resources--fer">
+          <img src="assets/img/fer.svg" alt="" class="menu--item--resources--fer--img">
+          <span class="menu--item--resources--fer--price">500</span>
+        </div>
+        <div class="menu--item--resources--silicium">
+          <img src="assets/img/silicium.svg" alt="" class="menu--item--resources--silicium--img">
+          <span class="menu--item--resources--silicium--price">500</span>
+        </div>
+        <div class="menu--item--resources--carbon">
+          <img src="assets/img/carbon.svg" alt="" class="menu--item--resources--carbon--img">
+          <span class="menu--item--resources--carbon--price">500</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu--item">
+      <img src="assets/img/wing_aero.svg" alt="" class="menu--item--img">
+      <div class="menu--item--title">Ailettes aerodynamique</div>
+      <div class="menu--item--resources">
+        <div class="menu--item--resources--fer">
+          <img src="assets/img/fer.svg" alt="" class="menu--item--resources--fer--img">
+          <span class="menu--item--resources--fer--price">320</span>
+        </div>
+        <div class="menu--item--resources--silicium">
+          <img src="assets/img/silicium.svg" alt="" class="menu--item--resources--silicium--img">
+          <span class="menu--item--resources--silicium--price">500</span>
+        </div>
+        <div class="menu--item--resources--carbon">
+          <img src="assets/img/carbon.svg" alt="" class="menu--item--resources--carbon--img">
+          <span class="menu--item--resources--carbon--price">250</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu--item">
+      <img src="assets/img/solar_panel.svg" alt="" class="menu--item--img">
+      <div class="menu--item--title">Panneaux solaire</div>
+      <div class="menu--item--resources">
+        <div class="menu--item--resources--fer">
+          <img src="assets/img/fer.svg" alt="" class="menu--item--resources--fer--img">
+          <span class="menu--item--resources--fer--price">400</span>
+        </div>
+        <div class="menu--item--resources--silicium">
+          <img src="assets/img/silicium.svg" alt="" class="menu--item--resources--silicium--img">
+          <span class="menu--item--resources--silicium--price">400</span>
+        </div>
+        <div class="menu--item--resources--carbon">
+          <img src="assets/img/carbon.svg" alt="" class="menu--item--resources--carbon--img">
+          <span class="menu--item--resources--carbon--price">400</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu--item">
+      <img src="assets/img/arm_robot.svg" alt="" class="menu--item--img">
+      <div class="menu--item--title">Bras Articulé</div>
+      <div class="menu--item--resources">
+        <div class="menu--item--resources--fer">
+          <img src="assets/img/fer.svg" alt="" class="menu--item--resources--fer--img">
+          <span class="menu--item--resources--fer--price">800</span>
+        </div>
+        <div class="menu--item--resources--silicium">
+          <img src="assets/img/silicium.svg" alt="" class="menu--item--resources--silicium--img">
+          <span class="menu--item--resources--silicium--price">800</span>
+        </div>
+        <div class="menu--item--resources--carbon">
+          <img src="assets/img/carbon.svg" alt="" class="menu--item--resources--carbon--img">
+          <span class="menu--item--resources--carbon--price">800</span>
+        </div>
+      </div>
+    </div>
+    <div class="menu--item--place"></div>
+  </div>
+  <img src="assets/img/mountain.svg" alt="" class="mountain">
+  <div class="rocket">
+    <img src="assets/img/fuselage.svg" alt="" class="rocket--fuselage">
+    <img src="assets/img/flame.svg" alt="" class="rocket--flame">
+    <img src="assets/img/wing.svg" alt="" class="rocket--wing">
+  </div>
+  <div class="distance">
+    <div class="distance--title">
+      Distance<br/>
+      <span class="distance--value">342</span>AL
+    </div>
+  </div>
+  <div class="resources">
+    <div class="resources--item">
+      <img src="assets/img/fer.svg" alt="" class="resources--item--img">
+      <div class="resources--item--score">342</div>
+    </div>
+    <div class="resources--item">
+      <img src="assets/img/silicium.svg" alt="" class="resources--item--img">
+      <div class="resources--item--score">312</div>
+    </div>
+    <div class="resources--item">
+      <img src="assets/img/carbon.svg" alt="" class="resources--item--img">
+      <div class="resources--item--score">296</div>
+    </div>
+  </div>
+  <div class="energy">
+    <img src="assets/img/energy_logo.svg" alt="" class="energy--logo">
+    <div class="energy--bar">
+      <div class="energy--bar--full"></div>
+    </div>
+  </div>
+<!-- scripts -->
+<script src="assets/js/app.min.js"></script>
+</body>
 </html>

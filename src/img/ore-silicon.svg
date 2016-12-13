@@ -1,1 +1,16 @@
-<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 302.62 466.29"><title>ore-silicon</title><polygon points="62.67 375.18 0.23 187.2 151.43 0 302.62 97.2 166.28 466.29 62.67 375.18" style="fill:#56d8c8"/><polygon points="151.43 194.4 302.62 97.2 269.09 359.09 166.28 466.29 151.43 194.4" style="fill:#7ceae1"/><polygon points="151.43 0 302.62 97.2 151.43 194.4 151.43 0" style="fill:#abfaf6"/><polygon points="0 187.61 151.56 194.4 151.43 0 0 187.61" style="fill:#ccfefd"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 302.6 466.3" style="enable-background:new 0 0 302.6 466.3;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#D83B38;}
+	.st1{fill:#EA6C73;}
+	.st2{fill:#FA9A9C;}
+	.st3{fill:#FEBABA;}
+</style>
+<title>ore-silicon</title>
+<path class="st0" d="M62.7,375.2l-62.4-188L151.4,0l151.2,97.2L166.3,466.3L62.7,375.2z"/>
+<path class="st1" d="M151.4,194.4l151.2-97.2l-33.5,261.9L166.3,466.3L151.4,194.4L151.4,194.4z"/>
+<path class="st2" d="M151.4,0l151.2,97.2l-151.2,97.2V0z"/>
+<path class="st3" d="M0,187.6l151.6,6.8L151.4,0L0,187.6z"/>
+</svg>
