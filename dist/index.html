@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <title>Space Traveler</title>
   <link rel="stylesheet" href="assets/css/app.min.css">
 </head>
@@ -148,21 +148,21 @@
   <div class="distance">
     <div class="distance--title">
       Distance<br/>
-      <span class="distance--value">342</span>AL
+      <span class="distance--value">0</span>AL
     </div>
   </div>
   <div class="resources">
     <div class="resources--item">
-      <img src="assets/img/fer.svg" alt="" class="resources--item--img">
-      <div class="resources--item--score">342</div>
+      <img src="assets/img/fer.svg" alt="" id="target-iron" class="resources--item--img">
+      <div id="info-iron" class="resources--item--score">0</div>
     </div>
     <div class="resources--item">
-      <img src="assets/img/silicium.svg" alt="" class="resources--item--img">
-      <div class="resources--item--score">312</div>
+      <img src="assets/img/silicium.svg" alt="" id="target-silicon" class="resources--item--img">
+      <div id="info-silicon" class="resources--item--score">0</div>
     </div>
     <div class="resources--item">
-      <img src="assets/img/carbon.svg" alt="" class="resources--item--img">
-      <div class="resources--item--score">296</div>
+      <img src="assets/img/carbon.svg" alt="" id="target-carbon" class="resources--item--img">
+      <div id="info-carbon" class="resources--item--score">0</div>
     </div>
   </div>
   <div class="energy">
@@ -170,6 +170,10 @@
     <div class="energy--bar">
       <div class="energy--bar--full"></div>
     </div>
+  </div>
+  <div class="particles-container">
+    <div class="ressources"></div>
+    <div class="indication"></div>
   </div>
 <!-- scripts -->
 <script src="assets/js/app.min.js"></script>

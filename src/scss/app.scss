@@ -8,10 +8,10 @@ $duration : 0.3s;
 
 @font-face {
 	font-family: 'Ailerons';
-	src: url('Ailerons-Regular.eot');
-	src: url('Ailerons-Regular.eot?#iefix') format('embedded-opentype'),
-		url('Ailerons-Regular.woff') format('woff'),
-		url('Ailerons-Regular.ttf') format('truetype');
+	src: url('../fonts/Ailerons-Regular.eot');
+	src: url('../fonts/Ailerons-Regular.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/Ailerons-Regular.woff') format('woff'),
+		url('../fonts/Ailerons-Regular.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -19,9 +19,9 @@ $duration : 0.3s;
 body {
   font-family: 'Ailerons';
   color: $color-txt;
+  user-select: none;
 }
 
-*{ box-sizing: border-box; }
 
 .sky {
   position: fixed;
