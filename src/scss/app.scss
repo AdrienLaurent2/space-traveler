@@ -123,6 +123,7 @@ body {
   height: 80%;
   padding-top: 5px;
   z-index: 99;
+  display: none;
   &--item {
     background-color: rgba(#777,.5);
     border: 6px solid #282828;
