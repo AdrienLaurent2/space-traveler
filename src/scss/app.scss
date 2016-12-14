@@ -86,7 +86,15 @@ body {
       text-transform: uppercase;
       position: absolute;
       top: 11px;
+      width: 200px;
       left: 85px;
+      &--lvl {
+        position: absolute;
+        text-transform: lowercase;
+        font-size: 12px;
+        right: 10px;
+        color: #e7e6e4;
+      }
     }
     &--resources {
       height: 20px;
