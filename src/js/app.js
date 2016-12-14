@@ -2,10 +2,9 @@ var interface = {};
 interface.iron         = document.querySelector('#info-iron');
 interface.carbon       = document.querySelector('#info-carbon');
 interface.silicon      = document.querySelector('#info-silicon');
-interface.power_fill   = document.querySelector('.energy--bar--fill');
-interface.click_number = document.querySelector('.click-number');
 
-interface.autoclicker  = {};
+interface.power_full   = document.querySelector('.energy--bar--full');
+interface.power_indic  = document.querySelector('.energy--value');
 
 interface.target = {};
 interface.target.iron     = document.querySelector('#target-iron');
@@ -14,6 +13,8 @@ interface.target.carbon   = document.querySelector('#target-carbon');
 interface.target.carbon_pos = interface.target.carbon.getBoundingClientRect();
 interface.target.silicon  = document.querySelector('#target-silicon');
 interface.target.silicon_pos = interface.target.silicon.getBoundingClientRect();
+
+interface.distance = document.querySelector('.distance--title--value');
 
 interface.shop = {};
 interface.shop.container = document.querySelector('.menu');
@@ -27,7 +28,7 @@ var ressources            = {};
 
 ressources.power          =  {};
 ressources.power.value    = 0;
-ressources.power.valuemax = 10;
+ressources.power.valuemax = 1000;
 ressources.power.ratio    = 0;
 
 ressources.ore            = {};
@@ -39,25 +40,25 @@ ressources.ore.silicon    = 0;
 var auto_clicker         = {};
 auto_clicker.power       = {};
 auto_clicker.power.increment_value       = 0;
-auto_clicker.power.increment_time        = 10;
+auto_clicker.power.increment_time        = 1;
 
 auto_clicker.ore                         = {};
 auto_clicker.ore.iron                    = {};
-auto_clicker.ore.iron.increment_time     = 10;
+auto_clicker.ore.iron.increment_time     = 1;
 auto_clicker.ore.iron.increment_value    = 0;
 
 auto_clicker.ore.carbon                  = {};
-auto_clicker.ore.carbon.increment_time   = 10;
+auto_clicker.ore.carbon.increment_time   = 1;
 auto_clicker.ore.carbon.increment_value  = 0;
 
 auto_clicker.ore.silicon                 = {};
-auto_clicker.ore.silicon.increment_time  = 10;
+auto_clicker.ore.silicon.increment_time  = 1;
 auto_clicker.ore.silicon.increment_value = 0;
 
 var clicker = {};
 clicker.click_number = 0;
 clicker.click_increment_value = 1;
-clicker.next_level = 5;
+clicker.next_level = 20;
 clicker.isOverShop  = false;
 
 interface.shop.container.addEventListener('mouseenter',function(){
@@ -123,8 +124,12 @@ function autoclickers(){
     ressources.ore.silicon += auto_clicker.ore.silicon.increment_value;
     update_interface();
   }
-  if(time%auto_clicker.power.increment_time == 0){
-    ressources.power += auto_clicker.power.increment_value;
+  if(time%auto_clicker.power.increment_time == 0 && ressources.power.value+auto_clicker.power.increment_value <= ressources.power.valuemax){
+    ressources.power.value += auto_clicker.power.increment_value;
+    updatePowerfill();
+  }
+  else if(ressources.power.value+auto_clicker.power.increment_value >= ressources.power.valuemax){
+    ressources.power.value = ressources.power.valuemax;
     updatePowerfill();
   }
 }
@@ -294,10 +299,9 @@ function addIndicParticle(e){
   var index = indic_particles.settings.index;
   indic_particles.items[index]         = {};
   indic_particles.items[index].x       = e.pageX;
-  indic_particles.items[index].y       = e.pageY;
+  indic_particles.items[index].y       = e.pageY-70;
   indic_particles.items[index].vy      = -4;
   indic_particles.items[index].opacity = 1;
-
   indic_particles.settings.index++;
 }
 
@@ -307,7 +311,7 @@ function indicParticleUpdate(){
     indic_particles.items[i].opacity -= 0.02;
     if(indic_particles.items[i].opacity < 0){
       indic_particles.items.splice(i,1);
-      indic_particles.settings--;
+      indic_particles.settings.index--;
     }
     else{
       indicDraw(i);
@@ -317,7 +321,7 @@ function indicParticleUpdate(){
 
 function indicDraw(i){
   var indic = document.createElement('p');
-  indic.style.transform = 'translate('+ indic_particles.items[i].x+'px,'+ indic_particles.items[i].y+'px)';
+  indic.style.transform = 'translate('+ (indic_particles.items[i].x-30 )+'px,'+ indic_particles.items[i].y+'px)';
 
   indic.style.opacity   =  indic_particles.items[i].opacity;
   indic.innerHTML       = "x" + clicker.click_increment_value;
@@ -392,6 +396,10 @@ function buy(i){
 
     shop.items[i].level++;
 
+    if(i == 0){
+      auto_clicker.power.increment_value = (shop.items[0].level*20);
+    }
+
     update_shop();
     update_interface();
 
@@ -448,9 +456,11 @@ for(var i = 0; i < interface.shop.items.length; i++){
 
 /* POWER */
 function updatePowerfill(){
-  var ratio = ressources.power.valuemax / ressources.power.value;
-  console.log(ratio);
+  var ratio = ressources.power.value / ressources.power.valuemax;
+  interface.power_full.style.transform = 'scaleY('+ratio+')';
+  interface.power_indic.innerHTML = ressources.power.value + '/' + ressources.power.valuemax;
 }
+updatePowerfill();
 /*
 var  prix__crystal1 = shop.items[0].price[0];
 var  prix__crystal2 = shop.items[0].price[1];
@@ -476,7 +486,8 @@ animation.mountain = document.querySelector('.mountain');
 animation.menu = document.querySelector('.menu');
 
 document.addEventListener('keydown', function(e){
-  if(e.keyCode == 32){
+  if(e.keyCode == 32 && ressources.power.value == ressources.power.valuemax){
+    e.preventDefault;
     animation.stars.classList.add('stars--anim');
     animation.sky.classList.add('sky--anim');
     animation.rocket.classList.add('rocket--anim');
@@ -486,4 +497,9 @@ document.addEventListener('keydown', function(e){
       animation.rocket_flame.classList.add('rocket--flame--anim');
     },1000)
   }
+  var dist = 0;
+  setInterval(function(){
+    dist++;
+    interface.distance.innerHTML = dist;
+  },1000);
 })
