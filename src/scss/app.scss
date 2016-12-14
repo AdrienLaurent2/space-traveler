@@ -105,7 +105,7 @@ body {
       left: 15px;
     }
     &:hover {
-      background-color: #414141;
+      background-color: #BA3525;
     }
     &--place {
       height: 300px;
@@ -153,16 +153,18 @@ body {
 
 .popup {
   position: fixed;
-  left: 330px;
+  left: 326px;
   width: 330px;
   top: 0px;
   height: 80%;
   padding-top: 5px;
-  z-index: 40;
+  z-index: 1000;
   &--item {
+    font-family: helvetica, sans-serif;
     background-color: rgba(#777,.5);
     border: 6px solid #282828;
-    border-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
     height: 75px;
     padding-top: 12px;
     padding-left: 10px;
