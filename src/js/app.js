@@ -22,6 +22,7 @@ var ressources            = {};
 ressources.power          =  {};
 ressources.power.value    = 0;
 ressources.power.valuemax = 10;
+ressources.power.ratio    = 0;
 
 ressources.ore            = {};
 ressources.ore.iron       = 0;
@@ -32,6 +33,7 @@ ressources.ore.silicon    = 0;
 var auto_clicker         = {};
 auto_clicker.power       = {};
 auto_clicker.power.increment_value       = 2;
+auto_clicker.power.increment_time        = 2;
 
 auto_clicker.ore                         = {};
 auto_clicker.ore.iron                    = {};
@@ -108,11 +110,16 @@ function click(e){
 
 }
 
+var i = {};
+document.addEventListener('mousemove',function(evt) {
+  i.pageX = evt.pageX;
+  i.pageY = evt.pageY;
+});
+
 window.addEventListener('keydown',function(e){
   if(e.keyCode == 32 && !clicker.spaceisdown){
-    click();
-    update_interface();
     clicker.spaceisdown = true;
+    click(i);
   }
 });
 
@@ -136,7 +143,7 @@ function update_interface(){
 }
 
 
-function autoclickers(){
+function autoclickers(){ 
   if(time%auto_clicker.ore.iron.increment_time == 0){
     ressources.ore.iron += auto_clicker.ore.iron.increment_value;
     update_interface();
@@ -149,12 +156,15 @@ function autoclickers(){
     ressources.ore.silicon += auto_clicker.ore.silicon.increment_value;
     update_interface();
   }
+  if(time%auto_clicker.power.increment_time == 0){
+    ressources.power += auto_clicker.power.increment_value;
+  }
 }
 
 
 setInterval(function(){
   time ++;
-  //autoclickers();
+  autoclickers();
 },1000)
 
 var click_particles = {};
@@ -268,16 +278,14 @@ function txtParticleAdd(type){
     txtParticles.items[index].x = interface.target.silicon_pos.left-20;
     txtParticles.items[index].y = interface.target.silicon_pos.top + interface.target.silicon_pos.height/2;
   }
-  //console.log(window.innerHeight)
 
   txtParticles.items[index].vx = -1;
   txtParticles.items[index].vy = -1;
 
-  console.log(txtParticles.items[index].y);
 
   txtParticles.items[index].opacity = 1;
   txtParticles.settings.index++;
-  
+
 }
 
 function txtParticleUpdate(){
