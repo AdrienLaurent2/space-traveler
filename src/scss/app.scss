@@ -1,8 +1,6 @@
 @charset 'UTF-8';
 @import 'normalize';
 
-@charset "UTF-8";
-
 $color-txt : #EAEAEA;
 $duration : 0.3s;
 
@@ -20,14 +18,21 @@ body {
   font-family: 'Ailerons';
   color: $color-txt;
   user-select: none;
+  background-color: #0e0e16;
 }
-
 
 .sky {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: linear-gradient( 180deg, #1D1D1B, #343356 );
+  background: linear-gradient( 180deg, #0e0e16, #343356 );
+  &--anim {
+    animation: sky_anim 2s 1s cubic-bezier(.71,.06,.98,.46) forwards;
+  }
+  @keyframes sky_anim {
+    from {transform: translateY(0);}
+    to {transform: translateY(100%);}
+  }
   &--star {
     position: absolute;
     top: 20px;
@@ -47,6 +52,13 @@ body {
   padding-top: 5px;
   overflow-y: scroll;
   overflow-x: hidden;
+  &--anim {
+    animation: menu_anim 2.5s forwards;
+  }
+  @keyframes menu_anim {
+    from {transform: translateX(0);}
+    to {transform: translateX(-400px);}
+  }
   &::-webkit-scrollbar {
     display: none;
   }
@@ -141,6 +153,13 @@ body {
   left: 50%;
   margin-left: -25px;
   width: 50px;
+  &--anim {
+    animation: rocket_anim 3s 1s cubic-bezier(.66,.06,.42,.99) forwards;
+  }
+  @keyframes rocket_anim {
+    from {transform: translateY(0);}
+    to {transform: translateY(-100px);}
+  }
   &--fuselage {
     width: 100%;
   }
@@ -164,6 +183,13 @@ body {
   position: fixed;
   width: 100%;
   bottom: 0;
+  &--anim {
+    animation: mountain_anim 2s 1s cubic-bezier(.71,.06,.98,.46) forwards;
+  }
+  @keyframes mountain_anim {
+    from {transform: translateY(0);}
+    to {transform: translateY(500px);}
+  }
 }
 
 .distance {
@@ -206,6 +232,7 @@ body {
     }
   }
 }
+
 .energy {
   position: fixed;
   top: 10%;
