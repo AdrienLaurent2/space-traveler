@@ -44,7 +44,7 @@ auto_clicker.ore.iron                    = {};
 auto_clicker.ore.iron.increment_time     = 10;
 auto_clicker.ore.iron.increment_value    = 1;
 
-auto_clicker.ore.carbon                  = {}; 
+auto_clicker.ore.carbon                  = {};
 auto_clicker.ore.carbon.increment_time   = 10;
 auto_clicker.ore.carbon.increment_value  = 1;
 
@@ -55,7 +55,7 @@ auto_clicker.ore.silicon.increment_value = 1;
 var clicker = {};
 clicker.click_number = 0;
 clicker.click_increment_value = 1;
-clicker.next_level = 10;
+clicker.next_level = 50;
 clicker.spaceisdown = false;
 clicker.isOverShop  = false;
 
@@ -109,7 +109,7 @@ window.addEventListener('click',function(e){
 });
 
 
-function autoclickers(){ 
+function autoclickers(){
   if(time%auto_clicker.ore.iron.increment_time == 0){
     ressources.ore.iron += auto_clicker.ore.iron.increment_value;
     update_interface();
@@ -316,7 +316,7 @@ function indicParticleUpdate(){
 function indicDraw(i){
   var indic = document.createElement('p');
   indic.style.transform = 'translate('+ indic_particles.items[i].x+'px,'+ indic_particles.items[i].y+'px)';
-  
+
   indic.style.opacity   =  indic_particles.items[i].opacity;
   indic.innerHTML       = "x" + clicker.click_increment_value;
   document.querySelector('.particles-container .multiplier').appendChild(indic);
@@ -341,31 +341,31 @@ render();
 var shop   = {};
 shop.items = [];
 
-shop.items[0] = {}; 
+shop.items[0] = {};
 shop.items[0].price    = [50,50,50];
 shop.items[0].level    = 1;
 
-shop.items[1] = {}; 
+shop.items[1] = {};
 shop.items[1].price    = [50,50,50];
 shop.items[1].level    = 1;
 
-shop.items[2] = {}; 
+shop.items[2] = {};
 shop.items[2].price    = [50,50,50];
 shop.items[2].level    = 1;
 
-shop.items[3] = {}; 
+shop.items[3] = {};
 shop.items[3].price    = [50,50,50];
 shop.items[3].level    = 1;
 
-shop.items[4] = {};  
+shop.items[4] = {};
 shop.items[4].price    = [50,50,50];
 shop.items[4].level    = 1;
 
-shop.items[5] = {};  
+shop.items[5] = {};
 shop.items[5].price    = [50,50,50];
 shop.items[5].level    = 1;
 
-shop.items[6] = {};  
+shop.items[6] = {};
 shop.items[6].price    = [50,50,50];
 shop.items[6].level    = 1;
 
@@ -427,7 +427,3 @@ function update_shop(start,end){
 
 update_shop();
 update_interface();
-
-
-
-
