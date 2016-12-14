@@ -35,9 +35,9 @@ ressources.power.valuemax = 1000;
 ressources.power.ratio    = 0;
 
 ressources.ore            = {};
-ressources.ore.iron       = 10000;
-ressources.ore.carbon     = 10000;
-ressources.ore.silicon    = 10000;
+ressources.ore.iron       = 100000;
+ressources.ore.carbon     = 100000;
+ressources.ore.silicon    = 100000;
 
 
 var auto_clicker         = {};
@@ -87,6 +87,7 @@ window.addEventListener('resize',function(){
 function click(e){
   if(!clicker.isOverShop){
     clicker.click_number++;
+    sound('../assets/sounds/drill.mp3');
     if(clicker.click_number >= clicker.next_level){
       clicker.click_increment_value ++;
       clicker.next_level *= 2;
@@ -109,6 +110,10 @@ function click(e){
   }
 }
 
+function sound(src){
+  var sound = new Audio(src);
+  sound.autoplay = true;
+}
 
 window.addEventListener('click',function(e){
   click(e);
@@ -395,12 +400,15 @@ for(var i = 0; i < interface.shop.items.length; i++){
   interface.shop.items[i].addEventListener('click',function(e){
     e.preventDefault();
     var item = this.dataset.item;
+    console.log(item);
     buy(item);
   });
 }
 
 function buy(i){
   if(shop.items[i].price[0] < ressources.ore.iron && shop.items[i].price[1] < ressources.ore.carbon && shop.items[i].price[2] < ressources.ore.silicon){
+
+    sound('../assets/sounds/cling.mp3');
 
     ressources.ore.iron    -= shop.items[i].price[0];
     ressources.ore.carbon  -= shop.items[i].price[1];
@@ -409,7 +417,7 @@ function buy(i){
     if(i != 0){
       shop.items[i].price[0] = Math.floor(Math.pow(shop.items[i].price[0],1.15));
       shop.items[i].price[1] = Math.floor(Math.pow(shop.items[i].price[1],1.15));
-      shop.items[i].price[2] = Math.round(Math.pow(shop.items[i].price[2],1.15));
+      shop.items[i].price[2] = Math.floor(Math.pow(shop.items[i].price[2],1.15));
     }
     else{
       shop.items[i].price[0] = Math.floor(Math.pow(shop.items[i].price[0],1.25));
@@ -417,7 +425,7 @@ function buy(i){
       shop.items[i].price[2] = Math.floor(Math.pow(shop.items[i].price[2],1.25));
     }
     shop.items[i].level++;
-
+    console.log(shop.items[i].price[0])
     if(i == 0){
       auto_clicker.power.increment_value = shop.items[0].level;
     }
@@ -431,8 +439,6 @@ function buy(i){
       auto_clicker.ore.carbon.increment_value  += 0.1;
     }
 
-
-
     update_shop();
     update_interface();
 
@@ -441,9 +447,9 @@ function buy(i){
 
 
 function update_interface(){
-  interface.iron.innerHTML         = ressources.ore.iron;
-  interface.carbon.innerHTML       = ressources.ore.carbon;
-  interface.silicon.innerHTML      = ressources.ore.silicon;
+  interface.iron.innerHTML         = Math.round(ressources.ore.iron);
+  interface.carbon.innerHTML       = Math.round(ressources.ore.carbon);
+  interface.silicon.innerHTML      = Math.round(ressources.ore.silicon);
 }
 
 
@@ -493,6 +499,7 @@ function updatePowerfill(){
   interface.power_indic.innerHTML = ressources.power.value + '/' + ressources.power.valuemax;
 }
 updatePowerfill();
+
 /*
 var  prix__crystal1 = shop.items[0].price[0];
 var  prix__crystal2 = shop.items[0].price[1];
@@ -527,6 +534,7 @@ document.addEventListener('keydown', function(e){
     animation.menu.classList.add('menu--anim');
     setTimeout(function(){
       animation.rocket_flame.classList.add('rocket--flame--anim');
+      sound('../assets/sounds/launch.mp3');
     },1000)
   }
 })
@@ -535,13 +543,13 @@ document.addEventListener('keydown', function(e){
 
 function arrondit(n){
   if(n > 1000 && n < 1000000){
-    var k = Math.round(n/1000)+'K';
+    var k = Math.floor(n/1000)+'K';
   }
   else if(n > 1000000 && n < 1000000000){
-    var k = Math.round(n/1000000)+'M';
+    var k = Math.floor(n/1000000)+'M';
   }
   else if(n > 1000000000){
-    var k = Math.round(n/1000000000)+'B';
+    var k = Math.floor(n/1000000000)+'B';
   }
   else{
     var k = n;
@@ -549,28 +557,7 @@ function arrondit(n){
   return k;
 }
 
-/*
-function arronditPrice(n){
-  if(n > 1000 && n < 1000000){
-    var k = n*0.01;
-  }
-  else if(n > 1000000 && n < 1000000000){
-    var k = Math.round(n/1000000)+'M';
-  }
-  else if(n > 1000000000){
-    var k = Math.round(n/1000000000)+'B';
-  }
-  else{
-    var k = n;
-  }
-  console.log(k);
-  return k;
-}
-
-arronditPrice(1300);
-*/
-
-var last_item= 0;
+var last_item = 0;
 
 for(var i = 0; i < interface.menu.length; i++){
   interface.menu[i].addEventListener('click',function(){
@@ -592,3 +579,4 @@ for(var i = 0; i < interface.menu.length; i++){
     last_item = item;
   });
 }
+
