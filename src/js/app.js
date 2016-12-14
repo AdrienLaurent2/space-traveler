@@ -16,7 +16,8 @@ interface.target.silicon  = document.querySelector('#target-silicon');
 interface.target.silicon_pos = interface.target.silicon.getBoundingClientRect();
 
 interface.shop = {};
-interface.shop.items = document.querySelectorAll('.menu--item');
+interface.shop.container = document.querySelector('.menu');
+interface.shop.items     = document.querySelectorAll('.menu--item');
 
 var time = 0;
 
@@ -28,9 +29,9 @@ ressources.power.valuemax = 10;
 ressources.power.ratio    = 0;
 
 ressources.ore            = {};
-ressources.ore.iron       = 1000;
-ressources.ore.carbon     = 1000;
-ressources.ore.silicon    = 1000;
+ressources.ore.iron       = 0;
+ressources.ore.carbon     = 0;
+ressources.ore.silicon    = 0;
 
 
 var auto_clicker         = {};
@@ -54,9 +55,17 @@ auto_clicker.ore.silicon.increment_value = 1;
 var clicker = {};
 clicker.click_number = 0;
 clicker.click_increment_value = 1;
-clicker.next_level = 50;
+clicker.next_level = 10;
 clicker.spaceisdown = false;
+clicker.isOverShop  = false;
 
+interface.shop.container.addEventListener('mouseenter',function(){
+  clicker.isOverShop  = true;
+});
+
+interface.shop.container.addEventListener('mouseleave',function(){
+  clicker.isOverShop  = false;
+});
 
 function resize(){
   interface.target.iron_pos = interface.target.iron.getBoundingClientRect();
@@ -68,47 +77,32 @@ window.addEventListener('resize',function(){
   resize();
 })
 
+
 function click(e){
-  clicker.click_number++;
-  if(clicker.click_number >= clicker.next_level){
-    clicker.click_increment_value ++;
-    clicker.next_level *= 2;
-  }
+  if(!clicker.isOverShop){
+    clicker.click_number++;
+    if(clicker.click_number >= clicker.next_level){
+      clicker.click_increment_value ++;
+      clicker.next_level *= 2;
+      addIndicParticle(e);
+    }
 
-  var random = Math.random();
+    var random = Math.random();
 
-  if(random <= 0.33){
-    var type = 'iron';
-  }
-  else if(random > 0.33 && random <= 0.66){
-    var type = 'carbon';
-  }
-  else if(random > 0.66){
-    var type = 'silicon';
-  }
+    if(random <= 0.33){
+      var type = 'iron';
+    }
+    else if(random > 0.33 && random <= 0.66){
+      var type = 'carbon';
+    }
+    else if(random > 0.66){
+      var type = 'silicon';
+    }
 
-  addparticles(e,type);
-
+    addparticles(e,type);
+  }
 }
 
-var i = {};
-document.addEventListener('mousemove',function(evt) {
-  i.pageX = evt.pageX;
-  i.pageY = evt.pageY;
-});
-
-window.addEventListener('keydown',function(e){
-  if(e.keyCode == 32 && !clicker.spaceisdown){
-    clicker.spaceisdown = true;
-    click(i);
-  }
-});
-
-window.addEventListener('keyup',function(e){
-  if(e.keyCode == 32){
-    clicker.spaceisdown = false;
-  }
-});
 
 window.addEventListener('click',function(e){
   click(e);
@@ -138,6 +132,8 @@ setInterval(function(){
   time ++;
   autoclickers();
 },1000)
+
+
 
 var click_particles = {};
 click_particles.items = [];
@@ -229,50 +225,47 @@ function drawParticles(i){
 }
 
 
-var txtParticles = {};
-txtParticles.items = [];
-txtParticles.settings = {};
-txtParticles.settings.index = 0;
-txtParticles.settings.state = false;
+var txt_particles = {};
+txt_particles.items = [];
+txt_particles.settings = {};
+txt_particles.settings.index = 0;
+txt_particles.settings.state = false;
 
 function txtParticleAdd(type){
-  var index = txtParticles.settings.index;
-  txtParticles.items[index] = {};
+  var index = txt_particles.settings.index;
+  txt_particles.items[index] = {};
   if(type == 'iron'){
-    txtParticles.items[index].x = interface.target.iron_pos.left-20;
-    txtParticles.items[index].y = interface.target.iron_pos.top + interface.target.iron_pos.height/2;
+    txt_particles.items[index].x = interface.target.iron_pos.left-20;
+    txt_particles.items[index].y = interface.target.iron_pos.top + interface.target.iron_pos.height/2;
   }
   else if(type == 'carbon'){
-    txtParticles.items[index].x = interface.target.carbon_pos.left-20;
-    txtParticles.items[index].y = interface.target.carbon_pos.top + interface.target.carbon_pos.height/2;
+    txt_particles.items[index].x = interface.target.carbon_pos.left-20;
+    txt_particles.items[index].y = interface.target.carbon_pos.top + interface.target.carbon_pos.height/2;
   }
   else if(type == 'silicon'){
-    txtParticles.items[index].x = interface.target.silicon_pos.left-20;
-    txtParticles.items[index].y = interface.target.silicon_pos.top + interface.target.silicon_pos.height/2;
+    txt_particles.items[index].x = interface.target.silicon_pos.left-20;
+    txt_particles.items[index].y = interface.target.silicon_pos.top + interface.target.silicon_pos.height/2;
   }
 
-  txtParticles.items[index].vx = -1;
-  txtParticles.items[index].vy = -1;
+  txt_particles.items[index].vx = -1;
+  txt_particles.items[index].vy = -1;
 
 
-  txtParticles.items[index].opacity = 1;
-  txtParticles.settings.index++;
+  txt_particles.items[index].opacity = 1;
+  txt_particles.settings.index++;
 
 }
 
 function txtParticleUpdate(){
-  for(var i = 0; i < txtParticles.items.length; i++){
-    txtParticles.items[i].x += txtParticles.items[i].vx;
-    txtParticles.items[i].y += txtParticles.items[i].vy;
-
-    txtParticles.items[i].vx *= 0.9;
-    txtParticles.items[i].vy *= 1.1;
-
-    txtParticles.items[i].opacity -= 0.03;
-
-    if(txtParticles.items[i].opacity < 0){
-      txtParticles.items.splice(i,1);
-      txtParticles.settings.index--;
+  for(var i = 0; i < txt_particles.items.length; i++){
+    txt_particles.items[i].x       += txt_particles.items[i].vx;
+    txt_particles.items[i].y       += txt_particles.items[i].vy;
+    txt_particles.items[i].vx      *= 0.9;
+    txt_particles.items[i].vy      *= 1.1;
+    txt_particles.items[i].opacity -= 0.03;
+    if(txt_particles.items[i].opacity < 0){
+      txt_particles.items.splice(i,1);
+      txt_particles.settings.index--;
     }
     else{
       txtParticlesDraw(i)
@@ -282,21 +275,60 @@ function txtParticleUpdate(){
 
 function txtParticlesDraw(i){
   var txt = document.createElement('p');
-  txt.style.transform = 'translate('+ txtParticles.items[i].x+'px,'+ txtParticles.items[i].y+'px)';
-  txt.style.width ='10px';
-  txt.style.height ='0';
-  txt.style.opacity =  txtParticles.items[i].opacity;
-  txt.innerHTML = "+" + clicker.click_increment_value;
+  txt.style.transform = 'translate('+ txt_particles.items[i].x+'px,'+ txt_particles.items[i].y+'px)';
+  txt.style.width     ='10px';
+  txt.style.height    ='0';
+  txt.style.opacity   =  txt_particles.items[i].opacity;
+  txt.innerHTML       = "+" + clicker.click_increment_value;
   document.querySelector('.particles-container .indication').appendChild(txt);
 }
 
+var indic_particles            = {};
+indic_particles.items          = [];
+indic_particles.settings       = {};
+indic_particles.settings.index = 0;
 
+function addIndicParticle(e){
+  var index = indic_particles.settings.index;
+  indic_particles.items[index]         = {};
+  indic_particles.items[index].x       = e.pageX;
+  indic_particles.items[index].y       = e.pageY;
+  indic_particles.items[index].vy      = -4;
+  indic_particles.items[index].opacity = 1;
+
+  indic_particles.settings.index++;
+}
+
+function indicParticleUpdate(){
+  for(var i = 0; i < indic_particles.items.length; i++){
+    indic_particles.items[i].y       += indic_particles.items[i].vy;
+    indic_particles.items[i].opacity -= 0.02;
+    if(indic_particles.items[i].opacity < 0){
+      indic_particles.items.splice(i,1);
+      indic_particles.settings--;
+    }
+    else{
+      indicDraw(i);
+    }
+  }
+}
+
+function indicDraw(i){
+  var indic = document.createElement('p');
+  indic.style.transform = 'translate('+ indic_particles.items[i].x+'px,'+ indic_particles.items[i].y+'px)';
+  
+  indic.style.opacity   =  indic_particles.items[i].opacity;
+  indic.innerHTML       = "x" + clicker.click_increment_value;
+  document.querySelector('.particles-container .multiplier').appendChild(indic);
+}
 
 function render(){
   document.querySelector('.particles-container .ressources').innerHTML = "";
   document.querySelector('.particles-container .indication').innerHTML = "";
+  document.querySelector('.particles-container .multiplier').innerHTML = "";
   updateParticles();
   txtParticleUpdate();
+  indicParticleUpdate();
   window.requestAnimationFrame(render);
 }
 
@@ -357,7 +389,7 @@ function buy(i){
     shop.items[i].price[2] *= 2;
 
     shop.items[i].level++;
-    
+
     update_shop();
     update_interface();
 
@@ -395,8 +427,6 @@ function update_shop(start,end){
 
 update_shop();
 update_interface();
-
-
 
 
 
