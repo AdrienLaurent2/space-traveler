@@ -276,7 +276,7 @@ body {
 .energy {
   position: fixed;
   top: 10%;
-  right: 40px;
+  right: 60px;
   z-index: 100;
   &--logo {
     width: 35px;
@@ -300,6 +300,15 @@ body {
       transform-origin: 100% 100%;
       transform: scaleY(0);
     }
+  }
+  &--value {
+    position: absolute;
+    left: 50%;
+    top: 400px;
+    margin-left: -150px;
+    width: 300px;
+    font-size: 25px;
+    text-align: center;
   }
 }
 
