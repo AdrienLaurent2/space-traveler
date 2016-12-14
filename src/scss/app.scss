@@ -76,6 +76,9 @@ body {
   overflow-x: hidden;
   z-index: 30;
   padding-top: 40px;
+  &--foreuse, &--classement, &--vaiseau {
+    display: none;
+  }
   &--select {
     width: 100%;
     height: 40px;
