@@ -15,6 +15,9 @@ interface.target.carbon_pos = interface.target.carbon.getBoundingClientRect();
 interface.target.silicon  = document.querySelector('#target-silicon');
 interface.target.silicon_pos = interface.target.silicon.getBoundingClientRect();
 
+interface.shop = {};
+interface.shop.items = document.querySelectorAll('.menu--item');
+
 var time = 0;
 
 var ressources            = {};
@@ -25,9 +28,9 @@ ressources.power.valuemax = 10;
 ressources.power.ratio    = 0;
 
 ressources.ore            = {};
-ressources.ore.iron       = 0;
-ressources.ore.carbon     = 0;
-ressources.ore.silicon    = 0;
+ressources.ore.iron       = 1000;
+ressources.ore.carbon     = 1000;
+ressources.ore.silicon    = 1000;
 
 
 var auto_clicker         = {};
@@ -53,28 +56,6 @@ clicker.click_number = 0;
 clicker.click_increment_value = 1;
 clicker.next_level = 50;
 clicker.spaceisdown = false;
-
-
-var shop   = {};
-shop.items = [];
-
-shop.items[0] = {}; 
-
-shop.items[0].name     = 'generateur'; 
-shop.items[0].maxlevel = 1; 
-shop.items[0].price    = [50,50,50];
-shop.items[0].level    = 0;
-
-function buy(i){
-  if( shop.items[i].level < shop.items[i].maxlevel && shop.items[i].price[0] < ressources.ore.iron && shop.items[i].price[1] < ressources.ore.carbon && shop.items[i].price[2] < ressources.ore.silicon){
-
-    shop.items[i].price[0] *= 2;
-    shop.items[i].price[1] *= 2;
-    shop.items[i].price[2] *= 2;
-
-    shop.items[i].level++;
-  }
-}
 
 
 function resize(){
@@ -132,15 +113,6 @@ window.addEventListener('keyup',function(e){
 window.addEventListener('click',function(e){
   click(e);
 });
-
-
-function update_interface(){
-  interface.iron.innerHTML         = ressources.ore.iron;
-  interface.carbon.innerHTML       = ressources.ore.carbon;
-  interface.silicon.innerHTML      = ressources.ore.silicon;
-  //interface.power.innerHTML        = ressources.power.value;
-  //interface.click_number.innerHTML = clicker.click_number;
-}
 
 
 function autoclickers(){ 
@@ -329,3 +301,103 @@ function render(){
 }
 
 render();
+
+
+
+/* SHOP */
+
+var shop   = {};
+shop.items = [];
+
+shop.items[0] = {}; 
+shop.items[0].price    = [50,50,50];
+shop.items[0].level    = 1;
+
+shop.items[1] = {}; 
+shop.items[1].price    = [50,50,50];
+shop.items[1].level    = 1;
+
+shop.items[2] = {}; 
+shop.items[2].price    = [50,50,50];
+shop.items[2].level    = 1;
+
+shop.items[3] = {}; 
+shop.items[3].price    = [50,50,50];
+shop.items[3].level    = 1;
+
+shop.items[4] = {};  
+shop.items[4].price    = [50,50,50];
+shop.items[4].level    = 1;
+
+shop.items[5] = {};  
+shop.items[5].price    = [50,50,50];
+shop.items[5].level    = 1;
+
+shop.items[6] = {};  
+shop.items[6].price    = [50,50,50];
+shop.items[6].level    = 1;
+
+for(var i = 0; i < interface.shop.items.length; i++){
+  interface.shop.items[i].addEventListener('click',function(e){
+    e.preventDefault();
+    var item = this.dataset.item;
+    buy(item);
+  });
+}
+
+function buy(i){
+  if(shop.items[i].price[0] < ressources.ore.iron && shop.items[i].price[1] < ressources.ore.carbon && shop.items[i].price[2] < ressources.ore.silicon){
+
+    ressources.ore.iron    -= shop.items[i].price[0];
+    ressources.ore.carbon  -= shop.items[i].price[1];
+    ressources.ore.silicon -= shop.items[i].price[2];
+
+    shop.items[i].price[0] *= 2;
+    shop.items[i].price[1] *= 2;
+    shop.items[i].price[2] *= 2;
+
+    shop.items[i].level++;
+    
+    update_shop();
+    update_interface();
+
+  }
+}
+
+
+function update_interface(){
+  interface.iron.innerHTML         = ressources.ore.iron;
+  interface.carbon.innerHTML       = ressources.ore.carbon;
+  interface.silicon.innerHTML      = ressources.ore.silicon;
+}
+
+
+function update_shop(start,end){
+  for(var i = 0; i < interface.shop.items.length; i++){
+    /*
+    interface.shop.items[i].children('.menu--item--title--lvl').innerHTML = 'lv.'+shop.items[i].level;
+    interface.shop.items[i].children('.menu--item--resources--fer--price').innerHTML = shop.items[i].price[0];
+    interface.shop.items[i].children('.menu--item--resources--silicium--price').innerHTML = shop.items[i].price[1];
+    interface.shop.items[i].children('.menu--item--resources--carbon--price').innerHTML = shop.items[i].price[2];*/
+    var res = {}
+    res.iron    = interface.shop.items[i].querySelector('.menu--item--resources--fer--price');
+    res.silicon = interface.shop.items[i].querySelector('.menu--item--resources--silicium--price');
+    res.carbon  = interface.shop.items[i].querySelector('.menu--item--resources--carbon--price');
+    res.level   = interface.shop.items[i].querySelector('.menu--item--title--lvl');
+
+    res.iron.innerHTML    = shop.items[i].price[0];
+    res.silicon.innerHTML = shop.items[i].price[1];
+    res.carbon.innerHTML  = shop.items[i].price[2];
+    res.level.innerHTML   ='lv.'+ shop.items[i].level;
+
+  }
+}
+
+update_shop();
+update_interface();
+
+
+
+
+
+
