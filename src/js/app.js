@@ -476,7 +476,7 @@ animation.mountain = document.querySelector('.mountain');
 animation.menu = document.querySelector('.menu');
 
 document.addEventListener('keydown', function(e){
-  if(e.keycode == 32){
+  if(e.keyCode == 32){
     animation.stars.classList.add('stars--anim');
     animation.sky.classList.add('sky--anim');
     animation.rocket.classList.add('rocket--anim');
