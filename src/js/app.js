@@ -20,6 +20,9 @@ interface.shop = {};
 interface.shop.container = document.querySelector('.menu');
 interface.shop.items     = document.querySelectorAll('.menu--item');
 
+interface.menu    = document.querySelectorAll('.menu--select--item');
+interface.onglets = document.querySelectorAll('.menu--onglet');
+
 interface.popup = document.querySelector('.popup--item');
 
 var time = 0;
@@ -32,9 +35,9 @@ ressources.power.valuemax = 1000;
 ressources.power.ratio    = 0;
 
 ressources.ore            = {};
-ressources.ore.iron       = 0;
-ressources.ore.carbon     = 0;
-ressources.ore.silicon    = 0;
+ressources.ore.iron       = 10000;
+ressources.ore.carbon     = 10000;
+ressources.ore.silicon    = 10000;
 
 
 var auto_clicker         = {};
@@ -68,6 +71,7 @@ interface.shop.container.addEventListener('mouseenter',function(){
 interface.shop.container.addEventListener('mouseleave',function(){
   clicker.isOverShop  = false;
 });
+
 
 function resize(){
   interface.target.iron_pos = interface.target.iron.getBoundingClientRect();
@@ -375,6 +379,18 @@ shop.items[6] = {};
 shop.items[6].price    = [50,50,50];
 shop.items[6].level    = 1;
 
+shop.items[7] = {};
+shop.items[7].price    = [50,50,50];
+shop.items[7].level    = 1;
+
+shop.items[8] = {};
+shop.items[8].price    = [50,50,50];
+shop.items[8].level    = 1;
+
+shop.items[9] = {};
+shop.items[9].price    = [50,50,50];
+shop.items[9].level    = 1;
+
 for(var i = 0; i < interface.shop.items.length; i++){
   interface.shop.items[i].addEventListener('click',function(e){
     e.preventDefault();
@@ -390,15 +406,32 @@ function buy(i){
     ressources.ore.carbon  -= shop.items[i].price[1];
     ressources.ore.silicon -= shop.items[i].price[2];
 
-    shop.items[i].price[0] *= 2;
-    shop.items[i].price[1] *= 2;
-    shop.items[i].price[2] *= 2;
-
+    if(i != 0){
+      shop.items[i].price[0] = Math.floor(Math.pow(shop.items[i].price[0],1.15));
+      shop.items[i].price[1] = Math.floor(Math.pow(shop.items[i].price[1],1.15));
+      shop.items[i].price[2] = Math.round(Math.pow(shop.items[i].price[2],1.15));
+    }
+    else{
+      shop.items[i].price[0] = Math.floor(Math.pow(shop.items[i].price[0],1.25));
+      shop.items[i].price[1] = Math.floor(Math.pow(shop.items[i].price[1],1.25));
+      shop.items[i].price[2] = Math.floor(Math.pow(shop.items[i].price[2],1.25));
+    }
     shop.items[i].level++;
 
     if(i == 0){
-      auto_clicker.power.increment_value = (shop.items[0].level*20);
+      auto_clicker.power.increment_value = shop.items[0].level;
     }
+    else if( i == 7){
+      auto_clicker.ore.iron.increment_value    += 0.1;
+    }
+    else if(i == 8){
+      auto_clicker.ore.silicon.increment_value += 0.1;
+    }
+    else if(i == 9){
+      auto_clicker.ore.carbon.increment_value  += 0.1;
+    }
+
+
 
     update_shop();
     update_interface();
@@ -422,11 +455,10 @@ function update_shop(start,end){
     res.carbon  = interface.shop.items[i].querySelector('.menu--item--resources--carbon--price');
     res.level   = interface.shop.items[i].querySelector('.menu--item--title--lvl');
 
-    res.iron.innerHTML    = shop.items[i].price[0];
-    res.silicon.innerHTML = shop.items[i].price[1];
-    res.carbon.innerHTML  = shop.items[i].price[2];
+    res.iron.innerHTML    = arrondit(shop.items[i].price[0]);
+    res.silicon.innerHTML = arrondit(shop.items[i].price[1]);
+    res.carbon.innerHTML  = arrondit(shop.items[i].price[2]);
     res.level.innerHTML   ='lv.'+ shop.items[i].level;
-
   }
 }
 
@@ -497,9 +529,66 @@ document.addEventListener('keydown', function(e){
       animation.rocket_flame.classList.add('rocket--flame--anim');
     },1000)
   }
-  var dist = 0;
-  setInterval(function(){
-    dist++;
-    interface.distance.innerHTML = dist;
-  },1000);
 })
+
+
+
+function arrondit(n){
+  if(n > 1000 && n < 1000000){
+    var k = Math.round(n/1000)+'K';
+  }
+  else if(n > 1000000 && n < 1000000000){
+    var k = Math.round(n/1000000)+'M';
+  }
+  else if(n > 1000000000){
+    var k = Math.round(n/1000000000)+'B';
+  }
+  else{
+    var k = n;
+  }
+  return k;
+}
+
+/*
+function arronditPrice(n){
+  if(n > 1000 && n < 1000000){
+    var k = n*0.01;
+  }
+  else if(n > 1000000 && n < 1000000000){
+    var k = Math.round(n/1000000)+'M';
+  }
+  else if(n > 1000000000){
+    var k = Math.round(n/1000000000)+'B';
+  }
+  else{
+    var k = n;
+  }
+  console.log(k);
+  return k;
+}
+
+arronditPrice(1300);
+*/
+
+var last_item= 0;
+
+for(var i = 0; i < interface.menu.length; i++){
+  interface.menu[i].addEventListener('click',function(){
+    var last_selected = interface.menu[last_item];
+    last_selected.classList.remove('menu--select--item--current');
+
+    var last_onglet_selected = interface.onglets[last_item];
+    last_onglet_selected.style.display = 'none';
+
+    var item = this.dataset.select;
+
+    var selected = interface.menu[item];
+    selected.classList.add('menu--select--item--current');
+
+    var onglet_selected = interface.onglets[item];
+    onglet_selected.style.display = 'block';
+
+
+    last_item = item;
+  });
+}
