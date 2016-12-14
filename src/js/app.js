@@ -2,7 +2,7 @@ var interface = {};
 interface.iron         = document.querySelector('#info-iron');
 interface.carbon       = document.querySelector('#info-carbon');
 interface.silicon      = document.querySelector('#info-silicon');
-interface.power        = document.querySelector('.power');
+interface.power_fill   = document.querySelector('.energy--bar--fill');
 interface.click_number = document.querySelector('.click-number');
 
 interface.autoclicker  = {};
@@ -18,6 +18,8 @@ interface.target.silicon_pos = interface.target.silicon.getBoundingClientRect();
 interface.shop = {};
 interface.shop.container = document.querySelector('.menu');
 interface.shop.items     = document.querySelectorAll('.menu--item');
+
+interface.popup = document.querySelector('.popup--item');
 
 var time = 0;
 
@@ -36,27 +38,26 @@ ressources.ore.silicon    = 0;
 
 var auto_clicker         = {};
 auto_clicker.power       = {};
-auto_clicker.power.increment_value       = 2;
-auto_clicker.power.increment_time        = 2;
+auto_clicker.power.increment_value       = 0;
+auto_clicker.power.increment_time        = 10;
 
 auto_clicker.ore                         = {};
 auto_clicker.ore.iron                    = {};
 auto_clicker.ore.iron.increment_time     = 10;
-auto_clicker.ore.iron.increment_value    = 1;
+auto_clicker.ore.iron.increment_value    = 0;
 
 auto_clicker.ore.carbon                  = {};
 auto_clicker.ore.carbon.increment_time   = 10;
-auto_clicker.ore.carbon.increment_value  = 1;
+auto_clicker.ore.carbon.increment_value  = 0;
 
 auto_clicker.ore.silicon                 = {};
 auto_clicker.ore.silicon.increment_time  = 10;
-auto_clicker.ore.silicon.increment_value = 1;
+auto_clicker.ore.silicon.increment_value = 0;
 
 var clicker = {};
 clicker.click_number = 0;
 clicker.click_increment_value = 1;
 clicker.next_level = 50;
-clicker.spaceisdown = false;
 clicker.isOverShop  = false;
 
 interface.shop.container.addEventListener('mouseenter',function(){
@@ -124,6 +125,7 @@ function autoclickers(){
   }
   if(time%auto_clicker.power.increment_time == 0){
     ressources.power += auto_clicker.power.increment_value;
+    updatePowerfill();
   }
 }
 
@@ -406,11 +408,6 @@ function update_interface(){
 
 function update_shop(start,end){
   for(var i = 0; i < interface.shop.items.length; i++){
-    /*
-    interface.shop.items[i].children('.menu--item--title--lvl').innerHTML = 'lv.'+shop.items[i].level;
-    interface.shop.items[i].children('.menu--item--resources--fer--price').innerHTML = shop.items[i].price[0];
-    interface.shop.items[i].children('.menu--item--resources--silicium--price').innerHTML = shop.items[i].price[1];
-    interface.shop.items[i].children('.menu--item--resources--carbon--price').innerHTML = shop.items[i].price[2];*/
     var res = {}
     res.iron    = interface.shop.items[i].querySelector('.menu--item--resources--fer--price');
     res.silicon = interface.shop.items[i].querySelector('.menu--item--resources--silicium--price');
@@ -427,3 +424,66 @@ function update_shop(start,end){
 
 update_shop();
 update_interface();
+
+
+/* POPUP BOUTIQUE */
+var popup_content = ['Permet de recharger les réserves d’énergie du vaisseau','Accroie la vitesse du vaisseau','Accroie considérablement la vitesse du vaisseau','Accroie la capacité de stockage d’énergie du vaiseau','Diminue la consomation de carburant du vaisseau','Recharge les accumulateur du vaisseau durant le vol','Permet de recupérer des ressources durant le vol'];
+
+for(var i = 0; i < interface.shop.items.length; i++){
+  interface.shop.items[i].addEventListener('mouseenter',function(e){
+    interface.popup.style.display = 'block';
+    interface.popup.style.transform = 'translateY('+(e.pageY-30)+'px)';
+    var item = this.dataset.item;
+    interface.popup.innerHTML = popup_content[item];
+  });
+  interface.shop.items[i].addEventListener('mousemove',function(e){
+    interface.popup.style.transform = 'translateY('+(e.pageY-30)+'px)';
+  });
+  interface.shop.items[i].addEventListener('mouseleave',function(e){
+    interface.popup.style.display = 'none';
+  });
+
+}
+
+
+/* POWER */
+function updatePowerfill(){
+  var ratio = ressources.power.valuemax / ressources.power.value;
+  console.log(ratio);
+}
+/*
+var  prix__crystal1 = shop.items[0].price[0];
+var  prix__crystal2 = shop.items[0].price[1];
+var  prix__crystal3 = shop.items[0].price[2];
+
+var newprice = Math.round((prix__crystal1 / (auto_clicker.ore.iron.increment_value/auto_clicker.ore.iron.increment_time)) + (prix__crystal1/( 'capacité de minage de la perceuse de crystal 1' / 'capacité de minage de la perceuse de crystal 1'+'augmentation de capacité de minage')));
+shop.items[0].price[0] = newprice;
+
+auto_clicker.ore.iron.increment_time     = 10;
+auto_clicker.ore.iron.increment_value    = 0;
+
+
+newprice = Math.pow(price,1.15);
+*/
+
+/* ANIMATION */
+var animation = {};
+animation.stars = document.querySelector('.stars');
+animation.sky = document.querySelector('.sky');
+animation.rocket = document.querySelector('.rocket');
+animation.rocket_flame = document.querySelector('.rocket--flame');
+animation.mountain = document.querySelector('.mountain');
+animation.menu = document.querySelector('.menu');
+
+document.addEventListener('keydown', function(e){
+  if(e.keycode = 32){
+    animation.stars.classList.add('stars--anim');
+    animation.sky.classList.add('sky--anim');
+    animation.rocket.classList.add('rocket--anim');
+    animation.mountain.classList.add('mountain--anim');
+    animation.menu.classList.add('menu--anim');
+    setTimeout(function(){
+      animation.rocket_flame.classList.add('rocket--flame--anim');
+    },1000)
+  }
+})
