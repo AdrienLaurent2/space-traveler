@@ -44,21 +44,35 @@ body {
   background-color: rgba(#777,.5);
   border: 6px solid #282828;
   border-radius: 15px;
-  padding: 15px;
+  padding-top: 5px;
   overflow-y: scroll;
   overflow-x: hidden;
-
   &::-webkit-scrollbar {
     display: none;
   }
-
   &--item {
     height: 60px;
-    border-bottom: 2px solid #282828;
-    box-sizing: content-box;
     position: relative;
+    display: block;
+    padding-left: 15px;
+    color: $color-txt;
+    transition-property: background;
+    transition-duration: $duration;
+    &::after {
+      content: '';
+      display: block;
+      height: 2px;
+      width: 265px;
+      background-color: #373636;
+      position: absolute;
+      bottom: 0;
+      left: 15px;
+    }
+    &:hover {
+      background-color: #414141;
+    }
     &--place {
-      height: 500px;
+      height: 300px;
     }
     &--img {
       margin-top: 10px;
@@ -72,12 +86,12 @@ body {
       text-transform: uppercase;
       position: absolute;
       top: 11px;
-      left: 70px;
+      left: 85px;
     }
     &--resources {
       height: 20px;
       position: absolute;
-      left: 70px;
+      left: 85px;
       bottom: 12px;
       width: 250px;
       &--fer, &--silicium, &--carbon {
