@@ -67,15 +67,41 @@ body {
   position: fixed;
   top: 20px;
   left: 20px;
-  width: 310px;
+  width: 319px;
   height: 80%;
   background-color: rgba(#777,.5);
   border: 6px solid #282828;
   border-radius: 15px;
-  padding-top: 5px;
   overflow-y: scroll;
   overflow-x: hidden;
   z-index: 30;
+  padding-top: 40px;
+  &--select {
+    width: 100%;
+    height: 40px;
+    font-size: 0;
+    position: fixed;
+    z-index: 2;
+    margin-top: -40px;
+    &--item {
+      font-size: 16px;
+      height: 40px;
+      padding: 0 12px;
+      text-align: center;
+      display: inline-block;
+      line-height: 40px;
+      text-decoration: none;
+      background-color: #282828;
+      color: #fff;
+      transition-duration: $duration;
+      &:hover {
+        background-color: #444449;
+      }
+      &--current {
+        background-color: #444449;
+      }
+    }
+  }
   &--anim {
     animation: menu_anim 2.5s forwards;
   }
@@ -98,14 +124,14 @@ body {
       content: '';
       display: block;
       height: 2px;
-      width: 265px;
+      width: 275px;
       background-color: #373636;
       position: absolute;
       bottom: 0;
       left: 15px;
     }
     &:hover {
-      background-color: #BA3525;
+      background-color: #363434;
     }
     &--place {
       height: 300px;
@@ -153,7 +179,7 @@ body {
 
 .popup {
   position: fixed;
-  left: 326px;
+  left: 335px;
   width: 330px;
   top: 0px;
   height: 80%;
