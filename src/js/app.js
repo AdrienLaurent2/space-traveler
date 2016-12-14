@@ -57,7 +57,7 @@ auto_clicker.ore.silicon.increment_value = 0;
 var clicker = {};
 clicker.click_number = 0;
 clicker.click_increment_value = 1;
-clicker.next_level = 50;
+clicker.next_level = 5;
 clicker.isOverShop  = false;
 
 interface.shop.container.addEventListener('mouseenter',function(){
