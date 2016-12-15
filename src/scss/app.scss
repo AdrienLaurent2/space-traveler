@@ -40,6 +40,13 @@ body {
   z-index: 20;
   &--anim {
     animation: stars_anim 5s 2.2s linear infinite;
+    &--end {
+      animation: stars_anim_end 5s cubic-bezier(0,.45,.21,1) forwards;
+    }
+    @keyframes stars_anim_end {
+      from {transform: translateY(50%);}
+      to {transform: translateY(0px);}
+    }
   }
   @keyframes stars_anim {
     0% {transform: translateY(0);}
@@ -55,6 +62,13 @@ body {
   z-index: 10;
   &--anim {
     animation: sky_anim 2s 1s cubic-bezier(.71,.06,.98,.46) forwards;
+    &--end {
+      animation: sky_anim_end 2s cubic-bezier(0,.45,.21,1) forwards;
+    }
+    @keyframes sky_anim_end {
+      from {transform: translateY(100%);}
+      to {transform: translateY(0px);}
+    }
   }
   @keyframes sky_anim {
     from {transform: translateY(0);}
@@ -237,6 +251,13 @@ body {
   z-index: 90;
   &--anim {
     animation: rocket_anim 3s 1s cubic-bezier(.66,.06,.42,.99) forwards;
+    &--end {
+      animation: rocket_anim_end 3s cubic-bezier(0,.45,.21,1) forwards;
+    }
+    @keyframes rocket_anim_end {
+      from {transform: translateY(100px);}
+      to {transform: translateY(0px);}
+    }
   }
   @keyframes rocket_anim {
     from {transform: translateY(0);}
@@ -325,6 +346,13 @@ body {
   }
   &--anim {
     animation: mountain_anim 2s 1s cubic-bezier(.71,.06,.98,.46) forwards;
+    &--end {
+      animation: mountain_anim_end 2s cubic-bezier(0,.45,.21,1) forwards;
+    }
+    @keyframes mountain_anim_end {
+      from {transform: translateY(500px);}
+      to {transform: translateY(0px);}
+    }
   }
   @keyframes mountain_anim {
     from {transform: translateY(0);}
