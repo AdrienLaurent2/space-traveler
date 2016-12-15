@@ -1,6 +1,7 @@
 var interface = {};
 
 interface.opening = document.querySelector('.opening');
+interface.title   = document.querySelector('.distance--title--value');
 
 setTimeout(function(){
   interface.opening.style.display = 'none';
@@ -10,8 +11,9 @@ interface.iron         = document.querySelector('#info-iron');
 interface.carbon       = document.querySelector('#info-carbon');
 interface.silicon      = document.querySelector('#info-silicon');
 
-interface.power_full   = document.querySelector('.energy--bar--full');
-interface.power_indic  = document.querySelector('.energy--value');
+interface.power_full       = document.querySelector('.energy--bar--full');
+interface.power_indic      = document.querySelector('.energy--value');
+interface.power_container  = document.querySelector('.energy--bar');
 
 interface.target = {};
 interface.target.iron     = document.querySelector('#target-iron');
@@ -30,7 +32,8 @@ interface.shop.items     = document.querySelectorAll('.menu--item');
 interface.menu    = document.querySelectorAll('.menu--select--item');
 interface.onglets = document.querySelectorAll('.menu--onglet');
 
-interface.popup = document.querySelector('.popup--item');
+interface.popup        = document.querySelector('.popup--item');
+interface.popup_energy = document.querySelector('.popup--energy--item');
 
 /* DISPLAY UPDGRADE AND AUTOCLICKERS */
 interface.spaceship = {};
@@ -58,9 +61,9 @@ ressources.power.value    = 0;
 ressources.power.valuemax = 1000;
 ressources.power.ratio    = 0;
 ressources.ore            = {};
-ressources.ore.iron       = 100000;
-ressources.ore.carbon     = 100000;
-ressources.ore.silicon    = 100000;
+ressources.ore.iron       = 0;
+ressources.ore.carbon     = 0;
+ressources.ore.silicon    = 0;
 
 
 var auto_clicker         = {};
@@ -86,6 +89,68 @@ clicker.isOverShop  = false;
 clicker.isInSpace   = false;
 clicker.time        = 0;
 
+var shop   = {};
+shop.items = [];
+shop.items[0]          = {};
+shop.items[0].price    = [1500,1500,1500];
+shop.items[0].level    = 1;
+shop.items[1]          = {};
+shop.items[1].price    = [4000,5000,1000];
+shop.items[1].level    = 1;
+shop.items[2]          = {};
+shop.items[2].price    = [2500,1500,2500];
+shop.items[2].level    = 1;
+shop.items[3]          = {};
+shop.items[3].price    = [5000,5000,5000];
+shop.items[3].level    = 1;
+shop.items[4]           = {};
+shop.items[4].price    = [400,250,100];
+shop.items[4].level    = 1;
+shop.items[5]          = {};
+shop.items[5].price    = [2000,5000,3500];
+shop.items[5].level    = 1;
+shop.items[6]          = {};
+shop.items[6].price    = [2000,2000,2000];
+shop.items[6].level    = 1;
+shop.items[7]          = {};
+shop.items[7].price    = [10,10,8];
+shop.items[7].level    = 1;
+shop.items[8]          = {};
+shop.items[8].price    = [10,8,10];
+shop.items[8].level    = 1;
+shop.items[9]          = {};
+shop.items[9].price    = [8,10,10];
+shop.items[9].level    = 1;
+
+var distance = 0;
+
+/* SAVE - LOCALSTORAGE */
+function save(){
+  localStorage.setItem('isStore', JSON.stringify('true'));
+  localStorage.setItem('ressources', JSON.stringify(ressources));
+  localStorage.setItem('autoclickers', JSON.stringify(auto_clicker));
+  localStorage.setItem('clicker', JSON.stringify(clicker));
+  localStorage.setItem('shop', JSON.stringify(shop));
+  localStorage.setItem('distance', JSON.stringify(distance));
+}
+
+
+function load(){
+  ressources   = JSON.parse(localStorage.getItem('ressources'));
+  auto_clicker = JSON.parse(localStorage.getItem('autoclickers'));
+  clicker      = JSON.parse(localStorage.getItem('clicker'));
+  shop         = JSON.parse(localStorage.getItem('shop'));
+  distance     = JSON.parse(localStorage.getItem('distance'));
+  update_interface();
+  update_shop();
+  update_screen();
+}
+var isStore = localStorage.getItem('isStore');
+if(isStore = 'true'){
+  load();
+}
+
+
 interface.shop.container.addEventListener('mouseenter',function(){
   clicker.isOverShop  = true;
 });
@@ -94,17 +159,24 @@ interface.shop.container.addEventListener('mouseleave',function(){
   clicker.isOverShop  = false;
 });
 
+/* RESIZE */
 function resize(){
-  interface.target.iron_pos = interface.target.iron.getBoundingClientRect();
-  interface.target.carbon_pos = interface.target.carbon.getBoundingClientRect();
-  interface.target.silicon_pos = interface.target.silicon.getBoundingClientRect();
+  interface.target.iron_pos           = interface.target.iron.getBoundingClientRect();
+  interface.target.carbon_pos         = interface.target.carbon.getBoundingClientRect();
+  interface.target.silicon_pos        = interface.target.silicon.getBoundingClientRect();
+  interface.autoclicker.generator_pos = interface.autoclicker.generator.getBoundingClientRect();
+  interface.autoclicker.silicon_pos   = interface.autoclicker.silicon.getBoundingClientRect();
+  interface.autoclicker.iron_pos      = interface.autoclicker.iron.getBoundingClientRect();
+  interface.autoclicker.carbon_pos    = interface.autoclicker.carbon.getBoundingClientRect();
 }
+resize();
 resize();
 window.addEventListener('resize',function(){
   resize();
 })
 
 
+/* ON CLICK EVENT */
 function click(e){
   if(!clicker.isOverShop){
     clicker.click_number++;
@@ -213,6 +285,7 @@ function autoclickers(){
 setInterval(function(){
   clicker.time ++;
   autoclickers();
+  save();
 },1000);
 
 
@@ -511,49 +584,6 @@ render();
 
 /* SHOP */
 
-var shop   = {};
-shop.items = [];
-
-shop.items[0] = {};
-shop.items[0].price    = [1500,1500,1500];
-shop.items[0].level    = 1;
-
-shop.items[1] = {};
-shop.items[1].price    = [4000,5000,1000];
-shop.items[1].level    = 1;
-
-shop.items[2] = {};
-shop.items[2].price    = [2500,1500,2500];
-shop.items[2].level    = 1;
-
-shop.items[3] = {};
-shop.items[3].price    = [5000,5000,5000];
-shop.items[3].level    = 1;
-
-shop.items[4] = {};
-shop.items[4].price    = [400,250,100];
-shop.items[4].level    = 1;
-
-shop.items[5] = {};
-shop.items[5].price    = [2000,5000,3500];
-shop.items[5].level    = 1;
-
-shop.items[6] = {};
-shop.items[6].price    = [2000,2000,2000];
-shop.items[6].level    = 1;
-
-shop.items[7] = {};
-shop.items[7].price    = [10,10,8];
-shop.items[7].level    = 1;
-
-shop.items[8] = {};
-shop.items[8].price    = [10,8,10];
-shop.items[8].level    = 1;
-
-shop.items[9] = {};
-shop.items[9].price    = [8,10,10];
-shop.items[9].level    = 1;
-
 for(var i = 0; i < interface.shop.items.length; i++){
   interface.shop.items[i].addEventListener('click',function(e){
     e.preventDefault();
@@ -600,8 +630,18 @@ function buy(i){
     else if(i == 3){
       ressources.power.valuemax += 100*shop.items[i].level;
     }
+
+    update_screen();
+    update_shop();
+    update_interface();
+
+  }
+}
+
+function update_screen(){
+  for(var i = 0; i < interface.shop.items.length; i++){
     console.log(i);
-    if(shop.items[i].level == 2){
+    if(shop.items[i].level >= 2){
       if(i == 0){
         interface.autoclicker.generator.classList.add('active');
         interface.autoclicker.generator_pos = interface.autoclicker.generator.getBoundingClientRect();
@@ -638,13 +678,8 @@ function buy(i){
         interface.autoclicker.iron_pos = interface.autoclicker.iron.getBoundingClientRect();
       }
     }
-
-    update_shop();
-    update_interface();
-
   }
 }
-
 
 function update_interface(){
   interface.iron.innerHTML         = Math.round(ressources.ore.iron);
@@ -653,7 +688,7 @@ function update_interface(){
 }
 
 
-function update_shop(start,end){
+function update_shop(){
   for(var i = 0; i < interface.shop.items.length; i++){
     var res = {}
     res.iron    = interface.shop.items[i].querySelector('.menu--item--resources--fer--price');
@@ -688,15 +723,32 @@ for(var i = 0; i < interface.shop.items.length; i++){
   interface.shop.items[i].addEventListener('mouseleave',function(e){
     interface.popup.style.display = 'none';
   });
-
 }
 
+/* POPUP ENERGY */
+interface.power_container.addEventListener('mouseenter',function(e){
+  interface.popup_energy.style.display = 'block';
+  interface.popup_energy.style.transform = 'translateY('+(e.pageY-190)+'px)';
+});
+interface.power_container.addEventListener('mousemove',function(e){
+  interface.popup_energy.style.transform = 'translateY('+(e.pageY-190)+'px)';
+});
+interface.power_container.addEventListener('mouseleave',function(e){
+  interface.popup_energy.style.display = 'none';
+});
 
+
+
+var noNotif = true;
 /* POWER */
 function updatePowerfill(){
   var ratio = ressources.power.value / ressources.power.valuemax;
   interface.power_full.style.transform = 'scaleY('+ratio+')';
   interface.power_indic.innerHTML = ressources.power.value + '/' + ressources.power.valuemax;
+  if(ressources.power.value == ressources.power.valuemax && noNotif){
+    energyNotification();
+    noNotif = false;
+  }
 }
 updatePowerfill();
 
@@ -710,10 +762,15 @@ animation.rocket_flame = document.querySelector('.rocket--flame');
 animation.mountain = document.querySelector('.mountain');
 animation.menu = document.querySelector('.menu');
 
+
+
+
+/* LAUNCH IN SPACE */
 document.addEventListener('keydown', function(e){
-  if(e.keyCode == 32 && ressources.power.value == ressources.power.valuemax && !clicker.isInSpace){
+  if(e.keyCode == 32 && !clicker.isInSpace && ressources.power.value >= ressources.power.valuemax ){
     e.preventDefault;
     clicker.isInSpace = true;
+    noNotif = true;
     launchRocket(calcTimeDistance());
   }
 })
@@ -735,31 +792,28 @@ function calcTimeDistance(){
   return time_travel;
 }
 
-function launchRocket(dist){
+function launchRocket(){
   animation.stars.classList.add('stars--anim');
   animation.sky.classList.add('sky--anim');
   animation.rocket.classList.add('rocket--anim');
   animation.mountain.classList.add('mountain--anim');
   animation.menu.classList.add('menu--anim');
+
   setTimeout(function(){
     animation.rocket_flame.classList.add('rocket--flame--anim');
     sound('../assets/sounds/launch.mp3');
-  },1000)
+  },1000);
 
-  var fuel = ressources.power.valuemax;
-  var dec  = fuel/dist;
 
   var int;
   int = setInterval(function(){
-    console.log('inte');
-    fuel -= dec;
-    ressources.power.value = Math.round(fuel);
+    ressources.power.value -= 1;
     updatePowerfill();
     if(ressources.power.value <= 0){
       clearInterval(int);
       endLaunch();
     }
-  },2);
+  },10);
 }
 
 function endLaunch(){
@@ -777,7 +831,14 @@ function endLaunch(){
     animation.mountain.classList.remove('mountain--anim');
     animation.menu.classList.remove('menu--anim');
     animation.rocket_flame.classList.remove('rocket--flame--anim');
-  },5000);
+
+    animation.stars.classList.remove('stars--anim--end');
+    animation.sky.classList.remove('sky--anim--end');
+    animation.rocket.classList.remove('rocket--anim--end');
+    animation.mountain.classList.remove('mountain--anim--end');
+    animation.menu.classList.remove('menu--anim--end');
+    animation.rocket_flame.classList.remove('rocket--flame--anim--end');
+  },2000);
 
   clicker.isInSpace = false;
 }
@@ -819,4 +880,28 @@ for(var i = 0; i < interface.menu.length; i++){
 
     last_item = item;
   });
+}
+
+
+/* NOTIFICATION */
+document.addEventListener('DOMContentLoaded', function () {
+  if (Notification.permission !== "granted")
+    Notification.requestPermission();
+});
+function energyNotification(){
+  if (!Notification ) {
+    alert('Desktop notifications not available in your browser. Try Chromium.');
+    return;
+  }
+  if ( Notification.permission !== "granted" )
+    Notification.requestPermission();
+  else {
+    var notification = new Notification('Notification title', {
+      icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
+      body: "Hey there! Your energy bar is full, you are ready to fly",
+    });
+    notification.onclick = function () {
+      window.open("http://baptistevillain.fr/project/clicker");
+    };
+  }
 }
