@@ -145,14 +145,14 @@ function autoclickers(){
   if(clicker.time%auto_clicker.ore.iron.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.iron += (auto_clicker.ore.iron.increment_value*(shop.items[6].level));
-      if(shop.items[9].level >= 2){
+      if(shop.items[9].level >= 2 && !clicker.isInSpace){
         var increment = Math.round(auto_clicker.ore.iron.increment_value*shop.items[6].level);
         addAutoclickerParticle('iron', increment);
       }
     }
     else{
       ressources.ore.iron += auto_clicker.ore.iron.increment_value;
-      if(shop.items[9].level >= 2){
+      if(shop.items[9].level >= 2 && !clicker.isInSpace){
         var increment = Math.round(auto_clicker.ore.iron.increment_value);
         addAutoclickerParticle('iron', increment);
       }
@@ -162,14 +162,14 @@ function autoclickers(){
   if(clicker.time%auto_clicker.ore.carbon.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.carbon += (auto_clicker.ore.carbon.increment_value*(shop.items[6].level));
-      if(shop.items[7].level >= 2){
+      if(shop.items[7].level >= 2 && !clicker.isInSpace){
         var increment = Math.round(auto_clicker.ore.carbon.increment_value*shop.items[6].level);
         addAutoclickerParticle('carbon', increment);
       }
     }
     else{
       ressources.ore.carbon += auto_clicker.ore.carbon.increment_value;
-      if(shop.items[7].level >= 2){
+      if(shop.items[7].level >= 2 && !clicker.isInSpace){
         var increment = Math.round(auto_clicker.ore.carbon.increment_value);
         addAutoclickerParticle('carbon', increment);
       }
@@ -179,14 +179,14 @@ function autoclickers(){
   if(clicker.time%auto_clicker.ore.silicon.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.silicon += (auto_clicker.ore.silicon.increment_value*(shop.items[6].level));
-      if(shop.items[8].level >= 2){
+      if(shop.items[8].level >= 2 && !clicker.isInSpace){
         var increment = Math.round(auto_clicker.ore.silicon.increment_value*shop.items[6].level);
         addAutoclickerParticle('silicon', increment);
       }
     }
     else{
       ressources.ore.silicon += auto_clicker.ore.silicon.increment_value;
-      if(shop.items[8].level >= 2){
+      if(shop.items[8].level >= 2 && !clicker.isInSpace){
         var increment = Math.round(auto_clicker.ore.silicon.increment_value);
         addAutoclickerParticle('silicon', increment);
       }
@@ -196,7 +196,7 @@ function autoclickers(){
   if(clicker.time%auto_clicker.power.increment_time == 0 && ressources.power.value+auto_clicker.power.increment_value <= ressources.power.valuemax){
     if(!clicker.isInSpace){
       ressources.power.value += auto_clicker.power.increment_value;
-      if(shop.items[0].level >= 2){
+      if(shop.items[0].level >= 2 && !clicker.isInSpace){
         var increment = Math.round(auto_clicker.power.increment_value)
         addAutoclickerParticle('power', increment);
       }
@@ -488,6 +488,7 @@ function drawAutoclickerParticle(i){
   svg.style.height = '20px';
   svg.style.position = 'absolute';
   svg.style.opacity = autoclicker_particles.items[i].opacity;
+  console.log(add);
   document.querySelector('.mountain .autoclicker').appendChild(svg);
   document.querySelector('.mountain .autoclicker').appendChild(add);
 
@@ -497,7 +498,7 @@ function render(){
   document.querySelector('.particles-container .ressources' ).innerHTML = "";
   document.querySelector('.particles-container .indication' ).innerHTML = "";
   document.querySelector('.particles-container .multiplier' ).innerHTML = "";
-  document.querySelector('.mountain .autoclicker').innerHTML = "";
+  document.querySelector('.particles-container .autoclicker').innerHTML = "";
   updateParticles();
   txtParticleUpdate();
   indicParticleUpdate();
