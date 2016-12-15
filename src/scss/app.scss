@@ -25,6 +25,10 @@ body {
   background-color: #0e0e16;
 }
 
+.active {
+  display: block;
+}
+
 .stars {
   position: fixed;
   width: 100%;
@@ -274,9 +278,6 @@ body {
     transform: translateX(-50%);
     z-index: -1;
     display: none;
-    &--active {
-      display: block;
-    }
   }
   &--aero {
     top: 180px;
@@ -336,9 +337,26 @@ body {
     margin-right: -182px;
     bottom: 100px;
     display: none;
-    &--active {
-      display: block;
-    }
+  }
+  &--robotR, &--robotV, &--robotB, {
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    right: 0;
+    width: 90px;
+    display: none;
+  }
+  &--robotR {
+    right: 25%;
+    bottom: 50px;
+  }
+  &--robotV {
+    left: 30%;
+    bottom: 30px;
+  }
+  &--robotB {
+    right: 5%;
+    bottom: 60px;
   }
 }
 
@@ -433,5 +451,9 @@ body {
   .multiplier p {
     font-family: 'Ailerons';
     font-size: 70px;
+  }
+  .indication {
+    display: inline-block;
+    font-size: 20px;
   }
 }
