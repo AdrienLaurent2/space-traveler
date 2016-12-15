@@ -79,6 +79,22 @@ body {
   &--foreuse, &--classement {
     display: none;
   }
+  &--vaiseau {
+    a:nth-child(2) > img {
+      margin-left: 7px;
+    }
+    a:nth-child(3) > img {
+      margin-left: 11px;
+    }
+    a:nth-child(5) > img {
+      margin-left: 7px;
+    }
+  }
+  &--foreuse {
+    img {
+      margin-left: 10px;
+    }
+  }
   &--select {
     width: 100%;
     height: 40px;
@@ -87,6 +103,12 @@ body {
     z-index: 2;
     margin-top: -40px;
     &--item {
+      &:nth-child(3){
+        border-top-right-radius: 10px;
+      }
+      &:nth-child(1){
+        border-top-left-radius: 10px;
+      }
       font-size: 16px;
       height: 40px;
       padding: 0 12px;
@@ -245,6 +267,44 @@ body {
     width: 120px;
     left: -35px;
   }
+  &--aero, &--post, &--anti, &--batt, &--sola, &--arms {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+    display: none;
+  }
+  &--aero {
+    top: 180px;
+    width: 130px;
+  }
+  &--post {
+    top: 30px;
+    width: 80px;
+    z-index: -2;
+    margin-left: 1px;
+  }
+  &--anti {
+    top: 252px;
+    width: 40px;
+    z-index: 1;
+  }
+  &--batt {
+    top: 150px;
+    width: 50px;
+    z-index: 1;
+  }
+  &--sola {
+    top: -20px;
+    width: 70px;
+    z-index: -1;
+  }
+  &--arms {
+    top: 45px;
+    width: 90px;
+    z-index: -1;
+  }
 }
 
 .mountain {
@@ -252,12 +312,26 @@ body {
   width: 100%;
   bottom: 0;
   z-index: 50;
+  &--img {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
   &--anim {
     animation: mountain_anim 2s 1s cubic-bezier(.71,.06,.98,.46) forwards;
   }
   @keyframes mountain_anim {
     from {transform: translateY(0);}
     to {transform: translateY(500px);}
+  }
+  &--generator {
+    width: 160px;
+    z-index: 10;
+    position: absolute;
+    right: 50%;
+    margin-right: -182px;
+    bottom: 100px;
   }
 }
 
