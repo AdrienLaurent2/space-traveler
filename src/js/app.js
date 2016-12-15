@@ -488,9 +488,8 @@ function drawAutoclickerParticle(i){
   svg.style.height = '20px';
   svg.style.position = 'absolute';
   svg.style.opacity = autoclicker_particles.items[i].opacity;
-  console.log(add);
-  document.querySelector('.mountain .autoclicker').appendChild(svg);
-  document.querySelector('.mountain .autoclicker').appendChild(add);
+  document.querySelector('.particles-container .autoclicker').appendChild(svg);
+  document.querySelector('.particles-container .autoclicker').appendChild(add);
 
 }
 
