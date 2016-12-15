@@ -26,7 +26,7 @@ body {
 }
 
 .active {
-  display: block;
+  display: block !important;
 }
 
 .stars {
@@ -270,6 +270,7 @@ body {
     position: absolute;
     width: 120px;
     left: -35px;
+    display: none;
   }
   &--aero, &--post, &--anti, &--batt, &--sola, &--arms {
     position: absolute;
@@ -284,7 +285,7 @@ body {
     width: 130px;
   }
   &--post {
-    top: 30px;
+    top: 60px;
     width: 80px;
     z-index: -2;
     margin-left: 1px;
