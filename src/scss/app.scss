@@ -274,6 +274,9 @@ body {
     transform: translateX(-50%);
     z-index: -1;
     display: none;
+    &--active {
+      display: block;
+    }
   }
   &--aero {
     top: 180px;
@@ -332,6 +335,10 @@ body {
     right: 50%;
     margin-right: -182px;
     bottom: 100px;
+    display: none;
+    &--active {
+      display: block;
+    }
   }
 }
 
