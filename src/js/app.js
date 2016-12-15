@@ -44,11 +44,11 @@ interface.spaceship.arms = document.querySelector('.rocket--arms');
 interface.autoclicker = {};
 interface.autoclicker.generator     = document.querySelector('.mountain--generator');
 interface.autoclicker.generator_pos = interface.autoclicker.generator.getBoundingClientRect();
-interface.autoclicker.silicon       = document.querySelector('.mountain--robotB');
+interface.autoclicker.silicon       = document.querySelector('.mountain--robotR');
 interface.autoclicker.silicon_pos   = interface.autoclicker.silicon.getBoundingClientRect();
 interface.autoclicker.iron          = document.querySelector('.mountain--robotV');
 interface.autoclicker.iron_pos      = interface.autoclicker.iron.getBoundingClientRect();
-interface.autoclicker.carbon        = document.querySelector('.mountain--robotR');
+interface.autoclicker.carbon        = document.querySelector('.mountain--robotB');
 interface.autoclicker.carbon_pos    = interface.autoclicker.carbon.getBoundingClientRect();
 
 
