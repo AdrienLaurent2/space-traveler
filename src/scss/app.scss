@@ -147,6 +147,13 @@ body {
   }
   &--anim {
     animation: menu_anim 2.5s forwards;
+    &--end {
+      animation: menu_anim_end 2.5s forwards;
+    }
+    @keyframes menu_anim_end {
+      from {transform: translateX(-400px);}
+      to {transform: translateX(0);}
+    }
   }
   @keyframes menu_anim {
     from {transform: translateX(0);}
