@@ -580,3 +580,18 @@ for(var i = 0; i < interface.menu.length; i++){
   });
 }
 
+var btn_save = document.querySelector('.btn_save');
+var player_name = "Hélène";
+var player_score = "5";
+var data = {
+    name: player_name,
+    score: player_score
+};
+
+btn_save.addEventListener('click', function()
+{
+    var request = new XMLHttpRequest();
+    request.open('POST', 'http://localhost:8888/Game_clicker/dist/user_score.php', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send(data);
+})
