@@ -601,6 +601,28 @@ body {
   }
 }
 
+.popup--energy {
+  position: fixed;
+  right: 83px;
+  width: 320px;
+  top: 150px;
+  height: 310px;
+  z-index: 1000;
+  &--item {
+    color: #d9d8d8;
+    font-family: helvetica, sans-serif;
+    background-color: rgba(#777,.4);
+    border: 2px solid #676767;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    height: 85px;
+    padding-top: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: none;
+  }
+}
+
 .particles-container {
   position: relative;
   z-index: 10000;
