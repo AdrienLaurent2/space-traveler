@@ -126,7 +126,7 @@ var distance = 0;
 
 /* SAVE - LOCALSTORAGE */
 function save(){
-  localStorage.setItem('isStore', JSON.stringify('true'));
+  localStorage.setItem('isStore', JSON.stringify('timo'));
   localStorage.setItem('ressources', JSON.stringify(ressources));
   localStorage.setItem('autoclickers', JSON.stringify(auto_clicker));
   localStorage.setItem('clicker', JSON.stringify(clicker));
@@ -145,11 +145,11 @@ function load(){
   update_shop();
   update_screen();
 }
-var isStore = localStorage.getItem('isStore');
-if(isStore = 'true'){
+var isStore = JSON.parse(localStorage.getItem('isStore'));
+console.log(isStore)
+if(isStore == 'timo'){
   load();
 }
-
 
 interface.shop.container.addEventListener('mouseenter',function(){
   clicker.isOverShop  = true;
