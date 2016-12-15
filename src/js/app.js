@@ -4,7 +4,7 @@ interface.opening = document.querySelector('.opening');
 
 setTimeout(function(){
   interface.opening.style.display = 'none';
-},9000)
+},30)
 
 interface.iron         = document.querySelector('#info-iron');
 interface.carbon       = document.querySelector('#info-carbon');
@@ -162,14 +162,14 @@ function autoclickers(){
   if(clicker.time%auto_clicker.ore.carbon.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.carbon += (auto_clicker.ore.carbon.increment_value*(shop.items[6].level));
-      if(shop.items[8].level >= 2){
+      if(shop.items[7].level >= 2){
         var increment = Math.round(auto_clicker.ore.carbon.increment_value*shop.items[6].level);
         addAutoclickerParticle('carbon', increment);
       }
     }
     else{
       ressources.ore.carbon += auto_clicker.ore.carbon.increment_value;
-      if(shop.items[8].level >= 2){
+      if(shop.items[7].level >= 2){
         var increment = Math.round(auto_clicker.ore.carbon.increment_value);
         addAutoclickerParticle('carbon', increment);
       }
@@ -179,14 +179,14 @@ function autoclickers(){
   if(clicker.time%auto_clicker.ore.silicon.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.silicon += (auto_clicker.ore.silicon.increment_value*(shop.items[6].level));
-      if(shop.items[7].level >= 2){
+      if(shop.items[8].level >= 2){
         var increment = Math.round(auto_clicker.ore.silicon.increment_value*shop.items[6].level);
         addAutoclickerParticle('silicon', increment);
       }
     }
     else{
       ressources.ore.silicon += auto_clicker.ore.silicon.increment_value;
-      if(shop.items[7].level >= 2){
+      if(shop.items[8].level >= 2){
         var increment = Math.round(auto_clicker.ore.silicon.increment_value);
         addAutoclickerParticle('silicon', increment);
       }
@@ -437,19 +437,19 @@ function addAutoclickerParticle(type, increment){
   autoclicker_particles.items[index].value   = increment;
   if(type == 'iron'){
     autoclicker_particles.items[index].x = interface.autoclicker.iron_pos.left;
-    autoclicker_particles.items[index].y = interface.autoclicker.iron_pos.top;
+    autoclicker_particles.items[index].y = interface.autoclicker.iron_pos.top-30;
   }
   if(type == 'carbon'){
     autoclicker_particles.items[index].x = interface.autoclicker.carbon_pos.left;
-    autoclicker_particles.items[index].y = interface.autoclicker.carbon_pos.top;
+    autoclicker_particles.items[index].y = interface.autoclicker.carbon_pos.top-30;
   }
   if(type == 'silicon'){
     autoclicker_particles.items[index].x = interface.autoclicker.silicon_pos.left;
-    autoclicker_particles.items[index].y = interface.autoclicker.silicon_pos.top;
+    autoclicker_particles.items[index].y = interface.autoclicker.silicon_pos.top-30;
   }
   if(type == 'power'){
     autoclicker_particles.items[index].x     = interface.autoclicker.generator_pos.left+100;
-    autoclicker_particles.items[index].y     = interface.autoclicker.generator_pos.top+100;
+    autoclicker_particles.items[index].y     = interface.autoclicker.generator_pos.top+90;
   }
   autoclicker_particles.items[index].type = type;
   autoclicker_particles.settings.index++;
@@ -488,8 +488,8 @@ function drawAutoclickerParticle(i){
   svg.style.height = '20px';
   svg.style.position = 'absolute';
   svg.style.opacity = autoclicker_particles.items[i].opacity;
-  document.querySelector('.particles-container .autoclicker').appendChild(svg);
-  document.querySelector('.particles-container .autoclicker').appendChild(add);
+  document.querySelector('.mountain .autoclicker').appendChild(svg);
+  document.querySelector('.mountain .autoclicker').appendChild(add);
 
 }
 
@@ -497,7 +497,7 @@ function render(){
   document.querySelector('.particles-container .ressources' ).innerHTML = "";
   document.querySelector('.particles-container .indication' ).innerHTML = "";
   document.querySelector('.particles-container .multiplier' ).innerHTML = "";
-  document.querySelector('.particles-container .autoclicker').innerHTML = "";
+  document.querySelector('.mountain .autoclicker').innerHTML = "";
   updateParticles();
   txtParticleUpdate();
   indicParticleUpdate();
@@ -563,13 +563,13 @@ for(var i = 0; i < interface.shop.items.length; i++){
 }
 
 function buy(i){
-  if(shop.items[i].price[0] < ressources.ore.iron && shop.items[i].price[1] < ressources.ore.carbon && shop.items[i].price[2] < ressources.ore.silicon){
+  if(shop.items[i].price[0] < ressources.ore.iron && shop.items[i].price[2] < ressources.ore.carbon && shop.items[i].price[1] < ressources.ore.silicon){
 
     sound('../assets/sounds/cling.mp3');
 
     ressources.ore.iron    -= shop.items[i].price[0];
-    ressources.ore.carbon  -= shop.items[i].price[1];
-    ressources.ore.silicon -= shop.items[i].price[2];
+    ressources.ore.silicon  -= shop.items[i].price[1];
+    ressources.ore.carbon -= shop.items[i].price[2];
 
     if(i != 0){
       shop.items[i].price[0] = Math.floor(Math.pow(shop.items[i].price[0],1.15));
@@ -625,11 +625,11 @@ function buy(i){
       if(i == 6){
         interface.spaceship.arms.classList.add('active');
       }
-      if(i == 7){
+      if(i == 8){
         interface.autoclicker.silicon.classList.add('active');
         interface.autoclicker.silicon_pos = interface.autoclicker.silicon.getBoundingClientRect();
       }
-      if(i == 8){
+      if(i == 7){
         interface.autoclicker.carbon.classList.add('active');
         interface.autoclicker.carbon_pos = interface.autoclicker.carbon.getBoundingClientRect();
       }
@@ -820,5 +820,3 @@ for(var i = 0; i < interface.menu.length; i++){
     last_item = item;
   });
 }
-
-
