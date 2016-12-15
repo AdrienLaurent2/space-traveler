@@ -1,4 +1,11 @@
 var interface = {};
+
+interface.opening = document.querySelector('.opening');
+
+setTimeout(function(){
+  interface.opening.style.display = 'none';
+},9000)
+
 interface.iron         = document.querySelector('#info-iron');
 interface.carbon       = document.querySelector('#info-carbon');
 interface.silicon      = document.querySelector('#info-silicon');
@@ -35,12 +42,15 @@ interface.spaceship.batt = document.querySelector('.rocket--batt');
 interface.spaceship.sola = document.querySelector('.rocket--sola');
 interface.spaceship.arms = document.querySelector('.rocket--arms');
 interface.autoclicker = {};
-interface.autoclicker.generator = document.querySelector('.mountain--generator');
-interface.autoclicker.silicon   = document.querySelector('.mountain--robotB');
-interface.autoclicker.iron      = document.querySelector('.mountain--robotV');
-interface.autoclicker.carbon    = document.querySelector('.mountain--robotR');
+interface.autoclicker.generator     = document.querySelector('.mountain--generator');
+interface.autoclicker.generator_pos = interface.autoclicker.generator.getBoundingClientRect();
+interface.autoclicker.silicon       = document.querySelector('.mountain--robotB');
+interface.autoclicker.silicon_pos   = interface.autoclicker.silicon.getBoundingClientRect();
+interface.autoclicker.iron          = document.querySelector('.mountain--robotV');
+interface.autoclicker.iron_pos      = interface.autoclicker.iron.getBoundingClientRect();
+interface.autoclicker.carbon        = document.querySelector('.mountain--robotR');
+interface.autoclicker.carbon_pos    = interface.autoclicker.carbon.getBoundingClientRect();
 
-console.log(interface.spaceship);
 
 var ressources            = {};
 ressources.power          =  {};
@@ -75,8 +85,6 @@ clicker.next_level = 20;
 clicker.isOverShop  = false;
 clicker.isInSpace   = false;
 clicker.time        = 0;
-
-
 
 interface.shop.container.addEventListener('mouseenter',function(){
   clicker.isOverShop  = true;
@@ -137,33 +145,61 @@ function autoclickers(){
   if(clicker.time%auto_clicker.ore.iron.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.iron += (auto_clicker.ore.iron.increment_value*(shop.items[6].level));
+      if(shop.items[9].level >= 2){
+        var increment = Math.round(auto_clicker.ore.iron.increment_value*shop.items[6].level);
+        addAutoclickerParticle('iron', increment);
+      }
     }
     else{
       ressources.ore.iron += auto_clicker.ore.iron.increment_value;
+      if(shop.items[9].level >= 2){
+        var increment = Math.round(auto_clicker.ore.iron.increment_value);
+        addAutoclickerParticle('iron', increment);
+      }
     }
     update_interface();
   }
   if(clicker.time%auto_clicker.ore.carbon.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.carbon += (auto_clicker.ore.carbon.increment_value*(shop.items[6].level));
+      if(shop.items[8].level >= 2){
+        var increment = Math.round(auto_clicker.ore.carbon.increment_value*shop.items[6].level);
+        addAutoclickerParticle('carbon', increment);
+      }
     }
     else{
       ressources.ore.carbon += auto_clicker.ore.carbon.increment_value;
+      if(shop.items[8].level >= 2){
+        var increment = Math.round(auto_clicker.ore.carbon.increment_value);
+        addAutoclickerParticle('carbon', increment);
+      }
     }
     update_interface();
   }
   if(clicker.time%auto_clicker.ore.silicon.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.silicon += (auto_clicker.ore.silicon.increment_value*(shop.items[6].level));
+      if(shop.items[7].level >= 2){
+        var increment = Math.round(auto_clicker.ore.silicon.increment_value*shop.items[6].level);
+        addAutoclickerParticle('silicon', increment);
+      }
     }
     else{
       ressources.ore.silicon += auto_clicker.ore.silicon.increment_value;
+      if(shop.items[7].level >= 2){
+        var increment = Math.round(auto_clicker.ore.silicon.increment_value);
+        addAutoclickerParticle('silicon', increment);
+      }
     }
     update_interface();
   }
   if(clicker.time%auto_clicker.power.increment_time == 0 && ressources.power.value+auto_clicker.power.increment_value <= ressources.power.valuemax){
     if(!clicker.isInSpace){
       ressources.power.value += auto_clicker.power.increment_value;
+      if(shop.items[0].level >= 2){
+        var increment = Math.round(auto_clicker.power.increment_value)
+        addAutoclickerParticle('power', increment);
+      }
     }
     updatePowerfill();
   }
@@ -387,13 +423,85 @@ function indicDraw(i){
   document.querySelector('.particles-container .multiplier').appendChild(indic);
 }
 
+
+var autoclicker_particles = {};
+autoclicker_particles.items = [];
+autoclicker_particles.settings = {};
+autoclicker_particles.settings.index = 0;
+
+function addAutoclickerParticle(type, increment){
+  var index = autoclicker_particles.settings.index;
+  autoclicker_particles.items[index]         = {};
+  autoclicker_particles.items[index].vy      = 0.9;
+  autoclicker_particles.items[index].opacity = 1;
+  autoclicker_particles.items[index].value   = increment;
+  if(type == 'iron'){
+    autoclicker_particles.items[index].x = interface.autoclicker.iron_pos.left;
+    autoclicker_particles.items[index].y = interface.autoclicker.iron_pos.top;
+  }
+  if(type == 'carbon'){
+    autoclicker_particles.items[index].x = interface.autoclicker.carbon_pos.left;
+    autoclicker_particles.items[index].y = interface.autoclicker.carbon_pos.top;
+  }
+  if(type == 'silicon'){
+    autoclicker_particles.items[index].x = interface.autoclicker.silicon_pos.left;
+    autoclicker_particles.items[index].y = interface.autoclicker.silicon_pos.top;
+  }
+  if(type == 'power'){
+    autoclicker_particles.items[index].x     = interface.autoclicker.generator_pos.left+100;
+    autoclicker_particles.items[index].y     = interface.autoclicker.generator_pos.top+100;
+  }
+  autoclicker_particles.items[index].type = type;
+  autoclicker_particles.settings.index++;
+}
+
+function updateAutoclickerParticle(){
+  for(var i = 0; i < autoclicker_particles.items.length; i++){
+    autoclicker_particles.items[i].y -=   autoclicker_particles.items[i].vy;
+    autoclicker_particles.items[i].vy *= 1.05;
+    autoclicker_particles.items[i].opacity -= 0.025;
+    if(autoclicker_particles.items[i].opacity < 0){
+      autoclicker_particles.items.splice(i,1);
+      autoclicker_particles.settings.index--;
+    }
+    else{
+      drawAutoclickerParticle(i);
+    }
+  }
+}
+
+function drawAutoclickerParticle(i){
+  var add = document.createElement('p');
+  add.style.transform = 'translate('+ (autoclicker_particles.items[i].x+20) +'px, '+ autoclicker_particles.items[i].y  +'px)';
+  add.innerHTML = "+" + autoclicker_particles.items[i].value;
+  add.style.opacity = autoclicker_particles.items[i].opacity;
+  add.style.position = 'absolute';
+
+  var svg = document.createElement('img');
+  svg.src ='../assets/img/ore-'+ autoclicker_particles.items[i].type +'.svg';
+
+  if(autoclicker_particles.items[i].type == 'power'){
+    svg.src ='../assets/img/energy_logo.svg';
+  }
+  svg.style.transform = 'translate('+ autoclicker_particles.items[i].x +'px, '+ autoclicker_particles.items[i].y  +'px)';
+  svg.style.width = '20px';
+  svg.style.height = '20px';
+  svg.style.position = 'absolute';
+  svg.style.opacity = autoclicker_particles.items[i].opacity;
+  document.querySelector('.particles-container .autoclicker').appendChild(svg);
+  document.querySelector('.particles-container .autoclicker').appendChild(add);
+
+}
+
 function render(){
-  document.querySelector('.particles-container .ressources').innerHTML = "";
-  document.querySelector('.particles-container .indication').innerHTML = "";
-  document.querySelector('.particles-container .multiplier').innerHTML = "";
+  document.querySelector('.particles-container .ressources' ).innerHTML = "";
+  document.querySelector('.particles-container .indication' ).innerHTML = "";
+  document.querySelector('.particles-container .multiplier' ).innerHTML = "";
+  document.querySelector('.particles-container .autoclicker').innerHTML = "";
   updateParticles();
   txtParticleUpdate();
   indicParticleUpdate();
+  updateAutoclickerParticle();
   window.requestAnimationFrame(render);
 }
 
@@ -435,15 +543,15 @@ shop.items[6].price    = [2000,2000,2000];
 shop.items[6].level    = 1;
 
 shop.items[7] = {};
-shop.items[7].price    = [10,5,5];
+shop.items[7].price    = [10,10,8];
 shop.items[7].level    = 1;
 
 shop.items[8] = {};
-shop.items[8].price    = [5,5,10];
+shop.items[8].price    = [10,8,10];
 shop.items[8].level    = 1;
 
 shop.items[9] = {};
-shop.items[9].price    = [5,10,5];
+shop.items[9].price    = [8,10,10];
 shop.items[9].level    = 1;
 
 for(var i = 0; i < interface.shop.items.length; i++){
@@ -496,6 +604,7 @@ function buy(i){
     if(shop.items[i].level == 2){
       if(i == 0){
         interface.autoclicker.generator.classList.add('active');
+        interface.autoclicker.generator_pos = interface.autoclicker.generator.getBoundingClientRect();
       }
       if(i == 1){
         interface.spaceship.post.classList.add('active')
@@ -518,12 +627,15 @@ function buy(i){
       }
       if(i == 7){
         interface.autoclicker.silicon.classList.add('active');
+        interface.autoclicker.silicon_pos = interface.autoclicker.silicon.getBoundingClientRect();
       }
       if(i == 8){
-        interface.autoclicker.carbon.classList.add('active'); 
+        interface.autoclicker.carbon.classList.add('active');
+        interface.autoclicker.carbon_pos = interface.autoclicker.carbon.getBoundingClientRect();
       }
       if(i == 9){
-        interface.autoclicker.iron.classList.add('active'); 
+        interface.autoclicker.iron.classList.add('active');
+        interface.autoclicker.iron_pos = interface.autoclicker.iron.getBoundingClientRect();
       }
     }
 
@@ -561,7 +673,7 @@ update_interface();
 
 
 /* POPUP BOUTIQUE */
-var popup_content = ['Permet de recharger les réserves d’énergie du vaisseau','Accroie la vitesse du vaisseau','Accroie considérablement la vitesse du vaisseau','Accroie la capacité de stockage d’énergie du vaiseau','Diminue la consomation de carburant du vaisseau','Recharge les accumulateur du vaisseau durant le vol','Permet de recupérer des ressources durant le vol'];
+var popup_content = ['Permet de recharger les réserves d’énergie du vaisseau','Accroie la vitesse du vaisseau','Accroie considérablement la vitesse du vaisseau','Accroie la capacité de stockage d’énergie du vaiseau','Diminue la consomation de carburant du vaissseau','Recharge les accumulateur du vaisseau durant le vol','Permet de recupérer des ressources durant le vol','Permet de récupérer des mineraux de silicium','Permet de récupérer des mineraux de carbon','Permet de récupérer des mineraux de fer'];
 
 for(var i = 0; i < interface.shop.items.length; i++){
   interface.shop.items[i].addEventListener('mouseenter',function(e){
@@ -641,7 +753,7 @@ function launchRocket(dist){
   int = setInterval(function(){
     console.log('inte');
     fuel -= dec;
-    ressources.power.value = fuel;
+    ressources.power.value = Math.round(fuel);
     updatePowerfill();
     if(ressources.power.value <= 0){
       clearInterval(int);
@@ -666,6 +778,8 @@ function endLaunch(){
     animation.menu.classList.remove('menu--anim');
     animation.rocket_flame.classList.remove('rocket--flame--anim');
   },5000);
+
+  clicker.isInSpace = false;
 }
 
 /* K, M & B */
