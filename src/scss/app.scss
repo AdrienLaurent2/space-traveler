@@ -207,9 +207,9 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  display: none;
   &--item {
     position: relative;
-    display: none;
     img {
       width: 60px;
     }
@@ -310,7 +310,7 @@ body {
   }
   &--foreuse {
     img {
-      margin-left: 10px;
+      margin-left: 0px;
     }
   }
   &--select {
