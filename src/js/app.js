@@ -1,3 +1,4 @@
+localStorage.clear;
 /* INTERFACE VARIABLES */
 var interface = {};
 
@@ -57,9 +58,16 @@ interface.autoclicker.carbon_pos    = interface.autoclicker.carbon.getBoundingCl
 
 interface.planete = {};
 interface.planete.container = document.querySelector('.planet');
+interface.planete.select = 1;
 interface.planete.items     = document.querySelectorAll('.planet--item');
 interface.planete.background      = document.querySelector('.mountain--img');
-interface.planete.background_list = ['assets/img/univers_bleu.svg','assets/img/univers_rouge.svg','assets/img/univers_vert.svg'];
+interface.planete.background_list = ['assets/img/univers_bleu.svg','assets/img/univers_rouge.svg','assets/img/univers_vert.svg', 'assets/img/univers_rouge.svg'];
+interface.planete.stat = [];
+interface.planete.stat[0] = [0.25,0.25,0.50];
+interface.planete.stat[1] = [0.25,0.50,0.25];
+interface.planete.stat[2] = [0.50,0.50,0.25];
+
+
 
 /* RESSOUCES VARIABLES */
 var ressources            = {};
@@ -150,6 +158,7 @@ function save(){
   localStorage.setItem('clicker', JSON.stringify(clicker));
   localStorage.setItem('shop', JSON.stringify(shop));
   localStorage.setItem('distance', distance);
+  localStorage.setItem('planete-select',interface.planete.select);
   var time = new Date().getTime() / 1000;
   localStorage.setItem('time', time);
 }
@@ -161,11 +170,12 @@ function load(){
   clicker           = JSON.parse(localStorage.getItem('clicker'));
   shop              = JSON.parse(localStorage.getItem('shop'));
   distance          = Math.round(localStorage.getItem('distance'));
+  interface.planete.select = localStorage.getItem('planete-select');
   clicker.isInSpace = false
   var time = localStorage.getItem('time');
   var current = new Date().getTime() / 1000;
   var between = Math.floor(current-time);
-  
+
   for(var i = 0; i < between; i++){
     ressources.ore.iron    += auto_clicker.ore.iron.increment_value;
     ressources.ore.carbon  += auto_clicker.ore.carbon.increment_value;
@@ -222,13 +232,13 @@ function click(e){
 
     var random = Math.random();
 
-    if(random <= 0.33){
+    if(random <= interface.planete.stat[interface.planete.select][0]){
       var type = 'iron';
     }
-    else if(random > 0.33 && random <= 0.66){
+    else if(random > interface.planete.stat[interface.planete.select][0] && random <= interface.planete.stat[interface.planete.select][1]){
       var type = 'carbon';
     }
-    else if(random > 0.66){
+    else if(random > interface.planete.stat[interface.planete.select][2]){
       var type = 'silicon';
     }
 
@@ -772,9 +782,6 @@ interface.power_container.addEventListener('mouseleave',function(e){
 });
 
 
-
-
-
 /* POWER FILL UPDATE*/
 var noNotif = true;
 function updatePowerfill(){
@@ -793,13 +800,8 @@ updatePowerfill();
 /* LAUNCH IN SPACE */
 document.addEventListener('keydown', function(e){
   if(e.keyCode == 32 && !clicker.isInSpace && ressources.power.value >= ressources.power.valuemax ){
-    e.preventDefault;
-    clicker.isInSpace = true;
-    noNotif = true;
-    
+    e.preventDefault;  
     interface.planete.container.style.display = 'block';
-    
-    
   }
 });
 
@@ -831,6 +833,8 @@ function calcTimeDistance(){
 }
 
 function launchRocket(i){
+  clicker.isInSpace = true;
+  noNotif = true;
   animation.stars.classList.add('stars--anim');
   animation.sky.classList.add('sky--anim');
   animation.rocket.classList.add('rocket--anim');
@@ -843,6 +847,8 @@ function launchRocket(i){
 
   setTimeout(function(){
     interface.planete.background.src = interface.planete.background_list[i];
+    interface.planete.select = i;
+    save();
   },4000)
 
   var dist = calcTimeDistance();
@@ -860,7 +866,7 @@ function launchRocket(i){
     if(ressources.power.value <= 0){
       clearInterval(int);
       endLaunch();
-      distance += Math.round(title); 
+      distance = Math.round(title); 
     }
   },20);
 }
