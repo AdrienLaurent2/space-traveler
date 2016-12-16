@@ -1,13 +1,23 @@
+<?php
+    require 'inc/config.php';
+
+    // query the database to get scores
+    $query = $pdo->query('SELECT * FROM scores ORDER BY score DESC limit 999');
+    $scores = $query->fetchAll();
+
+    $count = 1;
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
   <link rel="manifest" href="/manifest.json">
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#211e47">
+  <link rel="mask-icon" href="safari-pinned-tab.svg" color="#211e47">
   <meta name="apple-mobile-web-app-title" content="Space Traveler">
   <meta name="application-name" content="Space Traveler">
   <meta name="theme-color" content="#ffffff">
@@ -225,7 +235,23 @@
         </div>
       </a>
     </div>
-    <div class="menu--classement menu--onglet"></div>
+<!--LEADERBOARD -->
+    <div class="menu--classement menu--onglet">
+        <?php foreach($scores as $_score): ?>
+            <div class="menu--classement--data">
+                <span class="classement_number">
+                    <? echo $count++ ?>
+                </span>
+                <span class="classement_name">
+                    <?= $_score->name ?>
+                </span>
+                <span class="classement_score">
+                    <?= $_score->score ?>
+                </span>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
   </div>
   <div class="planet">
     <a href="#" class="planet--item planet--item--bleu" data-planete="0">
@@ -301,7 +327,18 @@
     <div class="multiplier"></div>
     <div class="autoclicker"></div>
   </div>
+
+  <!-- LEADERBOARD -->
+  <div class="modal-name">
+      <div class="modal-name--container">
+          <label for="">Votre nom d'astronaute</label>
+          <input class="user-name" type="text" placeholder="Entrez votre nom" />
+          <button class="btn-name">Explorer</button>
+      </div>
+  </div>
+  <div class="btn-save"><span class="btn-save-score">Save your score</span></div>
 <!-- scripts -->
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="assets/js/app.min.js"></script>
 </body>
 </html>
