@@ -10,6 +10,12 @@
 ## Demo
 You can test a working live demo at http://www.spacetraveler.xyz
 
+## Install locally
+- Import Database /dump/scores.sql
+- Change database connection settings in /dist/inc/config.php
+- npm install in terminal
+- Connect in localhost with MAMP
+
 ## Game
 
 ### Landing Page
@@ -31,8 +37,8 @@ When you have enough energy to takeoff you go to space :
 > Once your energy is hitting 0 you land on a new planet
 
 ![](https://media.giphy.com/media/l3vRdPGgGncGIZva0/giphy.gif)
-### Shop	
-Here's the shop : 
+### Shop
+Here's the shop :
 
 > Spend ores on upgrade or drills.
 
@@ -42,9 +48,9 @@ Here's the shop :
 
 If you find a bug , open an issue [here](https://github.com/BaptisteVillain/Game_clicker/issues).
 
-## Built with 
+## Built with
 
-- HTML 
+- HTML
 - CSS
 
 Set up the position and the animation.
