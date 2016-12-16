@@ -92,7 +92,7 @@ clicker.time        = 0;
 var shop   = {};
 shop.items = [];
 shop.items[0]          = {};
-shop.items[0].price    = [1500,1500,1500];
+shop.items[0].price    = [990,990,990];
 shop.items[0].level    = 1;
 shop.items[1]          = {};
 shop.items[1].price    = [4000,5000,1000];
@@ -131,7 +131,9 @@ function save(){
   localStorage.setItem('autoclickers', JSON.stringify(auto_clicker));
   localStorage.setItem('clicker', JSON.stringify(clicker));
   localStorage.setItem('shop', JSON.stringify(shop));
-  localStorage.setItem('distance', JSON.stringify(distance));
+  localStorage.setItem('distance', distance);
+  var time = new Date().getTime() / 1000;
+  localStorage.setItem('time', time);
 }
 
 
@@ -140,13 +142,25 @@ function load(){
   auto_clicker = JSON.parse(localStorage.getItem('autoclickers'));
   clicker      = JSON.parse(localStorage.getItem('clicker'));
   shop         = JSON.parse(localStorage.getItem('shop'));
-  distance     = JSON.parse(localStorage.getItem('distance'));
+  distance     = Math.round(localStorage.getItem('distance'));
+  var time = localStorage.getItem('time');
+  var current = new Date().getTime() / 1000;
+  var between = Math.floor(current-time);
+  console.log(between);
+  for(var i = 0; i < between; i++){
+    ressources.ore.iron    += auto_clicker.ore.iron.increment_value;
+    ressources.ore.carbon  += auto_clicker.ore.carbon.increment_value;
+    ressources.ore.silicon += auto_clicker.ore.silicon.increment_value;
+    if(ressources.power.value + auto_clicker.power.increment_value < ressources.power.valuemax){
+      ressources.power.value += auto_clicker.power.increment_value;
+    }
+  }
+
   update_interface();
   update_shop();
   update_screen();
 }
 var isStore = JSON.parse(localStorage.getItem('isStore'));
-console.log(isStore)
 if(isStore == 'timo'){
   load();
 }
@@ -551,10 +565,10 @@ function drawAutoclickerParticle(i){
   add.style.position = 'absolute';
 
   var svg = document.createElement('img');
-  svg.src ='../assets/img/ore-'+ autoclicker_particles.items[i].type +'.svg';
+  svg.src ='assets/img/ore-'+ autoclicker_particles.items[i].type +'.svg';
 
   if(autoclicker_particles.items[i].type == 'power'){
-    svg.src ='../assets/img/energy_logo.svg';
+    svg.src ='assets/img/energy_logo.svg';
   }
   svg.style.transform = 'translate('+ autoclicker_particles.items[i].x +'px, '+ autoclicker_particles.items[i].y  +'px)';
   svg.style.width = '20px';
@@ -640,7 +654,6 @@ function buy(i){
 
 function update_screen(){
   for(var i = 0; i < interface.shop.items.length; i++){
-    console.log(i);
     if(shop.items[i].level >= 2){
       if(i == 0){
         interface.autoclicker.generator.classList.add('active');
@@ -685,6 +698,7 @@ function update_interface(){
   interface.iron.innerHTML         = Math.round(ressources.ore.iron);
   interface.carbon.innerHTML       = Math.round(ressources.ore.carbon);
   interface.silicon.innerHTML      = Math.round(ressources.ore.silicon);
+  interface.title.innerHTML        = distance;
 }
 
 
@@ -798,22 +812,30 @@ function launchRocket(){
   animation.rocket.classList.add('rocket--anim');
   animation.mountain.classList.add('mountain--anim');
   animation.menu.classList.add('menu--anim');
-
   setTimeout(function(){
     animation.rocket_flame.classList.add('rocket--flame--anim');
     sound('../assets/sounds/launch.mp3');
   },1000);
 
 
+  var dist = calcTimeDistance();
+  var fuel = ressources.power.valuemax;
+  var ratio = 1/(fuel/dist);
+
+  var title = distance;
+
   var int;
   int = setInterval(function(){
     ressources.power.value -= 1;
+    title += (1*ratio);
+    interface.title.innerHTML = Math.round(title);
     updatePowerfill();
     if(ressources.power.value <= 0){
       clearInterval(int);
       endLaunch();
+      distance += Math.round(title); 
     }
-  },10);
+  },20);
 }
 
 function endLaunch(){
@@ -846,13 +868,13 @@ function endLaunch(){
 /* K, M & B */
 function arrondit(n){
   if(n > 1000 && n < 1000000){
-    var k = Math.floor(n/1000)+'K';
+    var k = Math.round(n/1000)+'K';
   }
   else if(n > 1000000 && n < 1000000000){
-    var k = Math.floor(n/1000000)+'M';
+    var k = Math.round(n/1000000)+'M';
   }
   else if(n > 1000000000){
-    var k = Math.floor(n/1000000000)+'B';
+    var k = Math.round(n/1000000000)+'B';
   }
   else{
     var k = n;
