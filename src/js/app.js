@@ -1,3 +1,4 @@
+/* INTERFACE VARIABLES */
 var interface = {};
 
 interface.opening = document.querySelector('.opening');
@@ -54,7 +55,13 @@ interface.autoclicker.iron_pos      = interface.autoclicker.iron.getBoundingClie
 interface.autoclicker.carbon        = document.querySelector('.mountain--robotB');
 interface.autoclicker.carbon_pos    = interface.autoclicker.carbon.getBoundingClientRect();
 
+interface.planete = {};
+interface.planete.container = document.querySelector('.planet');
+interface.planete.items     = document.querySelectorAll('.planet--item');
+interface.planete.background      = document.querySelector('.mountain--img');
+interface.planete.background_list = ['assets/img/univers_bleu.svg','assets/img/univers_rouge.svg','assets/img/univers_vert.svg'];
 
+/* RESSOUCES VARIABLES */
 var ressources            = {};
 ressources.power          =  {};
 ressources.power.value    = 0;
@@ -65,7 +72,7 @@ ressources.ore.iron       = 0;
 ressources.ore.carbon     = 0;
 ressources.ore.silicon    = 0;
 
-
+/* AUTOCLICKER VARIABLES */
 var auto_clicker         = {};
 auto_clicker.power       = {};
 auto_clicker.power.increment_value       = 0;
@@ -81,6 +88,7 @@ auto_clicker.ore.silicon                 = {};
 auto_clicker.ore.silicon.increment_time  = 1;
 auto_clicker.ore.silicon.increment_value = 0;
 
+/* CLICK VARIABLES */
 var clicker = {};
 clicker.click_number = 0;
 clicker.click_increment_value = 1;
@@ -89,6 +97,7 @@ clicker.isOverShop  = false;
 clicker.isInSpace   = false;
 clicker.time        = 0;
 
+/* SHOP VARIABLES */
 var shop   = {};
 shop.items = [];
 shop.items[0]          = {};
@@ -124,7 +133,16 @@ shop.items[9].level    = 1;
 
 var distance = 0;
 
-/* SAVE - LOCALSTORAGE */
+/* ANIMATION */
+var animation = {};
+animation.stars = document.querySelector('.stars');
+animation.sky = document.querySelector('.sky');
+animation.rocket = document.querySelector('.rocket');
+animation.rocket_flame = document.querySelector('.rocket--flame');
+animation.mountain = document.querySelector('.mountain');
+animation.menu = document.querySelector('.menu');
+
+/* SAVE/LOAD - LOCALSTORAGE */
 function save(){
   localStorage.setItem('isStore', JSON.stringify('timo'));
   localStorage.setItem('ressources', JSON.stringify(ressources));
@@ -138,15 +156,16 @@ function save(){
 
 
 function load(){
-  ressources   = JSON.parse(localStorage.getItem('ressources'));
-  auto_clicker = JSON.parse(localStorage.getItem('autoclickers'));
-  clicker      = JSON.parse(localStorage.getItem('clicker'));
-  shop         = JSON.parse(localStorage.getItem('shop'));
-  distance     = Math.round(localStorage.getItem('distance'));
+  ressources        = JSON.parse(localStorage.getItem('ressources'));
+  auto_clicker      = JSON.parse(localStorage.getItem('autoclickers'));
+  clicker           = JSON.parse(localStorage.getItem('clicker'));
+  shop              = JSON.parse(localStorage.getItem('shop'));
+  distance          = Math.round(localStorage.getItem('distance'));
+  clicker.isInSpace = false
   var time = localStorage.getItem('time');
   var current = new Date().getTime() / 1000;
   var between = Math.floor(current-time);
-  console.log(between);
+  
   for(var i = 0; i < between; i++){
     ressources.ore.iron    += auto_clicker.ore.iron.increment_value;
     ressources.ore.carbon  += auto_clicker.ore.carbon.increment_value;
@@ -226,7 +245,7 @@ window.addEventListener('click',function(e){
   click(e);
 });
 
-
+/* AUTOCLICKER EVENT */
 function autoclickers(){
   if(clicker.time%auto_clicker.ore.iron.increment_time == 0){
     if(clicker.isInSpace){
@@ -295,7 +314,7 @@ function autoclickers(){
   }
 }
 
-
+/*AUTOCLICK INTERVAL */
 setInterval(function(){
   clicker.time ++;
   autoclickers();
@@ -303,7 +322,7 @@ setInterval(function(){
 },1000);
 
 
-
+/* PARTICULES */
 var click_particles = {};
 click_particles.items = [];
 click_particles.settings = {};
@@ -597,7 +616,6 @@ render();
 
 
 /* SHOP */
-
 for(var i = 0; i < interface.shop.items.length; i++){
   interface.shop.items[i].addEventListener('click',function(e){
     e.preventDefault();
@@ -652,6 +670,7 @@ function buy(i){
   }
 }
 
+/* UPDATE AUTOCLICKER SCREEN */
 function update_screen(){
   for(var i = 0; i < interface.shop.items.length; i++){
     if(shop.items[i].level >= 2){
@@ -694,6 +713,7 @@ function update_screen(){
   }
 }
 
+/* UPDATE INTERFACE */
 function update_interface(){
   interface.iron.innerHTML         = Math.round(ressources.ore.iron);
   interface.carbon.innerHTML       = Math.round(ressources.ore.carbon);
@@ -753,8 +773,10 @@ interface.power_container.addEventListener('mouseleave',function(e){
 
 
 
+
+
+/* POWER FILL UPDATE*/
 var noNotif = true;
-/* POWER */
 function updatePowerfill(){
   var ratio = ressources.power.value / ressources.power.valuemax;
   interface.power_full.style.transform = 'scaleY('+ratio+')';
@@ -763,20 +785,9 @@ function updatePowerfill(){
     energyNotification();
     noNotif = false;
   }
+  document.title = Math.round(ratio*100) + '% Space Traveler';
 }
 updatePowerfill();
-
-
-/* ANIMATION */
-var animation = {};
-animation.stars = document.querySelector('.stars');
-animation.sky = document.querySelector('.sky');
-animation.rocket = document.querySelector('.rocket');
-animation.rocket_flame = document.querySelector('.rocket--flame');
-animation.mountain = document.querySelector('.mountain');
-animation.menu = document.querySelector('.menu');
-
-
 
 
 /* LAUNCH IN SPACE */
@@ -785,9 +796,22 @@ document.addEventListener('keydown', function(e){
     e.preventDefault;
     clicker.isInSpace = true;
     noNotif = true;
-    launchRocket(calcTimeDistance());
+    
+    interface.planete.container.style.display = 'block';
+    
+    
   }
-})
+});
+
+/* CHOOSE PLANETE */
+for(var i = 0; i < interface.planete.items.length; i++){
+  interface.planete.items[i].addEventListener('click',function(e){
+    e.preventDefault();
+    var target = this.dataset.planete;
+    launchRocket(target);
+    interface.planete.container.style.display = 'none';
+  });
+}
 
 function calcTimeDistance(){
   var time_travel = ressources.power.valuemax;
@@ -806,7 +830,7 @@ function calcTimeDistance(){
   return time_travel;
 }
 
-function launchRocket(){
+function launchRocket(i){
   animation.stars.classList.add('stars--anim');
   animation.sky.classList.add('sky--anim');
   animation.rocket.classList.add('rocket--anim');
@@ -817,6 +841,9 @@ function launchRocket(){
     sound('../assets/sounds/launch.mp3');
   },1000);
 
+  setTimeout(function(){
+    interface.planete.background.src = interface.planete.background_list[i];
+  },4000)
 
   var dist = calcTimeDistance();
   var fuel = ressources.power.valuemax;
@@ -865,7 +892,7 @@ function endLaunch(){
   clicker.isInSpace = false;
 }
 
-/* K, M & B */
+/* K, M & B ARRONDIT */
 function arrondit(n){
   if(n > 1000 && n < 1000000){
     var k = Math.round(n/1000)+'K';
