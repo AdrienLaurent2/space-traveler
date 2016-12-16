@@ -11,7 +11,7 @@
 You can test a working live demo at http://www.spacetraveler.xyz
 
 ## Install locally
-- Import Database /dump/scores.sql
+- Create database and import /dump/scores.sql
 - Change database connection settings in /dist/inc/config.php
 - npm install in terminal
 - Connect in localhost with MAMP
