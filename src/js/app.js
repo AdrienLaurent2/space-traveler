@@ -1,13 +1,8 @@
-localStorage.clear;
 /* INTERFACE VARIABLES */
 var interface = {};
 
 interface.opening = document.querySelector('.opening');
 interface.title   = document.querySelector('.distance--title--value');
-
-setTimeout(function(){
-  interface.opening.style.display = 'none';
-},30)
 
 interface.iron         = document.querySelector('#info-iron');
 interface.carbon       = document.querySelector('#info-carbon');
@@ -63,9 +58,9 @@ interface.planete.items     = document.querySelectorAll('.planet--item');
 interface.planete.background      = document.querySelector('.mountain--img');
 interface.planete.background_list = ['assets/img/univers_bleu.svg','assets/img/univers_rouge.svg','assets/img/univers_vert.svg', 'assets/img/univers_rouge.svg'];
 interface.planete.stat = [];
-interface.planete.stat[0] = [0.25,0.25,0.50];
-interface.planete.stat[1] = [0.25,0.50,0.25];
-interface.planete.stat[2] = [0.50,0.50,0.25];
+interface.planete.stat[0] = ['silicon','iron','carbon'];
+interface.planete.stat[1] = ['carbon','iron','silicon'];
+interface.planete.stat[2] = ['carbon','silicon','iron'];
 
 
 
@@ -192,6 +187,12 @@ function load(){
 var isStore = JSON.parse(localStorage.getItem('isStore'));
 if(isStore == 'timo'){
   load();
+  interface.opening.style.display = 'none';
+}
+else{
+  setTimeout(function(){
+    interface.opening.style.display = 'none';
+  },9000);
 }
 
 interface.shop.container.addEventListener('mouseenter',function(){
@@ -232,16 +233,15 @@ function click(e){
 
     var random = Math.random();
 
-    if(random <= interface.planete.stat[interface.planete.select][0]){
-      var type = 'iron';
+    if(random <= 0.25){
+      var type = interface.planete.stat[interface.planete.select][0];
     }
-    else if(random > interface.planete.stat[interface.planete.select][0] && random <= interface.planete.stat[interface.planete.select][1]){
-      var type = 'carbon';
+    else if(random > 0.25 && random <= 0.5){
+      var type = interface.planete.stat[interface.planete.select][1];
     }
-    else if(random > interface.planete.stat[interface.planete.select][2]){
-      var type = 'silicon';
+    else if(random > 0.5){
+      var type = interface.planete.stat[interface.planete.select][2];
     }
-
     addparticles(e,type);
   }
 }
@@ -257,17 +257,18 @@ window.addEventListener('click',function(e){
 
 /* AUTOCLICKER EVENT */
 function autoclickers(){
+  var visible = vis();
   if(clicker.time%auto_clicker.ore.iron.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.iron += (auto_clicker.ore.iron.increment_value*(shop.items[6].level));
-      if(shop.items[9].level >= 2 && !clicker.isInSpace){
+      if(shop.items[9].level >= 2 && !clicker.isInSpace && visible){
         var increment = Math.round(auto_clicker.ore.iron.increment_value*shop.items[6].level);
         addAutoclickerParticle('iron', increment);
       }
     }
     else{
       ressources.ore.iron += auto_clicker.ore.iron.increment_value;
-      if(shop.items[9].level >= 2 && !clicker.isInSpace){
+      if(shop.items[9].level >= 2 && !clicker.isInSpace && visible){
         var increment = Math.round(auto_clicker.ore.iron.increment_value);
         addAutoclickerParticle('iron', increment);
       }
@@ -277,14 +278,14 @@ function autoclickers(){
   if(clicker.time%auto_clicker.ore.carbon.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.carbon += (auto_clicker.ore.carbon.increment_value*(shop.items[6].level));
-      if(shop.items[7].level >= 2 && !clicker.isInSpace){
+      if(shop.items[7].level >= 2 && !clicker.isInSpace && visible){
         var increment = Math.round(auto_clicker.ore.carbon.increment_value*shop.items[6].level);
         addAutoclickerParticle('carbon', increment);
       }
     }
     else{
       ressources.ore.carbon += auto_clicker.ore.carbon.increment_value;
-      if(shop.items[7].level >= 2 && !clicker.isInSpace){
+      if(shop.items[7].level >= 2 && !clicker.isInSpace && visible){
         var increment = Math.round(auto_clicker.ore.carbon.increment_value);
         addAutoclickerParticle('carbon', increment);
       }
@@ -294,14 +295,14 @@ function autoclickers(){
   if(clicker.time%auto_clicker.ore.silicon.increment_time == 0){
     if(clicker.isInSpace){
       ressources.ore.silicon += (auto_clicker.ore.silicon.increment_value*(shop.items[6].level));
-      if(shop.items[8].level >= 2 && !clicker.isInSpace){
+      if(shop.items[8].level >= 2 && !clicker.isInSpace && visible){
         var increment = Math.round(auto_clicker.ore.silicon.increment_value*shop.items[6].level);
         addAutoclickerParticle('silicon', increment);
       }
     }
     else{
       ressources.ore.silicon += auto_clicker.ore.silicon.increment_value;
-      if(shop.items[8].level >= 2 && !clicker.isInSpace){
+      if(shop.items[8].level >= 2 && !clicker.isInSpace && visible){
         var increment = Math.round(auto_clicker.ore.silicon.increment_value);
         addAutoclickerParticle('silicon', increment);
       }
@@ -311,7 +312,7 @@ function autoclickers(){
   if(clicker.time%auto_clicker.power.increment_time == 0 && ressources.power.value+auto_clicker.power.increment_value <= ressources.power.valuemax){
     if(!clicker.isInSpace){
       ressources.power.value += auto_clicker.power.increment_value;
-      if(shop.items[0].level >= 2 && !clicker.isInSpace){
+      if(shop.items[0].level >= 2 && !clicker.isInSpace && visible){
         var increment = Math.round(auto_clicker.power.increment_value)
         addAutoclickerParticle('power', increment);
       }
@@ -729,6 +730,7 @@ function update_interface(){
   interface.carbon.innerHTML       = Math.round(ressources.ore.carbon);
   interface.silicon.innerHTML      = Math.round(ressources.ore.silicon);
   interface.title.innerHTML        = distance;
+  interface.planete.background.src = interface.planete.background_list[interface.planete.select];
 }
 
 
@@ -898,7 +900,7 @@ function endLaunch(){
   clicker.isInSpace = false;
 }
 
-/* K, M & B ARRONDIT */
+/* K, M & B ROUND */
 function arrondit(n){
   if(n > 1000 && n < 1000000){
     var k = Math.round(n/1000)+'K';
@@ -960,3 +962,23 @@ function energyNotification(){
     };
   }
 }
+
+/* TAB IS ACTIVE */
+var vis = (function(){
+  var stateKey, eventKey, keys = {
+    hidden: "visibilitychange",
+    webkitHidden: "webkitvisibilitychange",
+    mozHidden: "mozvisibilitychange",
+    msHidden: "msvisibilitychange"
+  };
+  for (stateKey in keys) {
+    if (stateKey in document) {
+      eventKey = keys[stateKey];
+      break;
+    }
+  }
+  return function(c) {
+    if (c) document.addEventListener(eventKey, c);
+    return !document[stateKey];
+  }
+})();
