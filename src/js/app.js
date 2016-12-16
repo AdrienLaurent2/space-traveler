@@ -800,7 +800,7 @@ updatePowerfill();
 /* LAUNCH IN SPACE */
 document.addEventListener('keydown', function(e){
   if(e.keyCode == 32 && !clicker.isInSpace && ressources.power.value >= ressources.power.valuemax ){
-    e.preventDefault;  
+    e.preventDefault;
     interface.planete.container.style.display = 'block';
   }
 });
@@ -866,7 +866,7 @@ function launchRocket(i){
     if(ressources.power.value <= 0){
       clearInterval(int);
       endLaunch();
-      distance = Math.round(title); 
+      distance = Math.round(title);
     }
   },20);
 }
@@ -951,9 +951,9 @@ function energyNotification(){
   if ( Notification.permission !== "granted" )
     Notification.requestPermission();
   else {
-    var notification = new Notification('Notification title', {
-      icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
-      body: "Hey there! Your energy bar is full, you are ready to fly",
+    var notification = new Notification('Votre vaiseau est prêt !', {
+      icon: 'http://baptistevillain.fr/project/clicker/assets/img/logo.svg',
+      body: "Les accumulateurs de votre vaiseau sont rechargé, vous pouvez décoler",
     });
     notification.onclick = function () {
       window.open("http://baptistevillain.fr/project/clicker");
