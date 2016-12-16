@@ -237,6 +237,7 @@
     </div>
 <!--LEADERBOARD -->
     <div class="menu--classement menu--onglet">
+         <div class="btn-save"><span class="btn-save-score">Save your score</span></div>
         <?php foreach($scores as $_score): ?>
             <div class="menu--classement--data">
                 <span class="classement_number">
@@ -336,7 +337,7 @@
           <button class="btn-name">Explorer</button>
       </div>
   </div>
-  <div class="btn-save"><span class="btn-save-score">Save your score</span></div>
+
 <!-- scripts -->
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="assets/js/app.min.js"></script>
